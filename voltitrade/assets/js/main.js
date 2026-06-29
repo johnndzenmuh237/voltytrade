@@ -289,3 +289,79 @@
   });
 
 })();
+/**
+ * VAULTEX — MOBILE NAV STABILITY FIX
+ * Paste at the very bottom of assets/js/main.js
+ * (after the previous mobile nav fix you already pasted)
+ *
+ * Fixes:
+ *  1. Measures the scrollbar width so the page doesn't jump when
+ *     overflow:hidden is applied on open
+ *  2. Switches body class instead of inline style so CSS handles locking
+ */
+
+(function () {
+  "use strict";
+
+  /* ── Measure scrollbar width once and store as CSS variable ── */
+  function setScrollbarWidth() {
+    const width = window.innerWidth - document.documentElement.clientWidth;
+    document.documentElement.style.setProperty(
+      "--scrollbar-width",
+      width + "px"
+    );
+  }
+  setScrollbarWidth();
+  window.addEventListener("resize", setScrollbarWidth);
+
+  /* ── Override the open/close from the previous fix to use
+        body class instead of inline overflow style ────────────── */
+  const navBurger = document.querySelector(".nav-burger");
+  const menu      = document.querySelector(".mobile-menu");
+  const backdrop  = document.querySelector(".mobile-menu-backdrop");
+
+  if (!navBurger || !menu) return;
+
+  function openMenu() {
+    setScrollbarWidth(); // measure fresh before locking
+    menu.classList.add("is-open");
+    if (backdrop) backdrop.classList.add("is-open");
+    document.body.classList.add("menu-open");
+    navBurger.setAttribute("aria-expanded", "true");
+  }
+
+  function closeMenu() {
+    menu.classList.remove("is-open");
+    if (backdrop) backdrop.classList.remove("is-open");
+    document.body.classList.remove("menu-open");
+    navBurger.setAttribute("aria-expanded", "false");
+  }
+
+  /* Replace the burger listener cleanly */
+  const newBurger = navBurger.cloneNode(true); // clone removes old listeners
+  navBurger.parentNode.replaceChild(newBurger, navBurger);
+
+  newBurger.addEventListener("click", () => {
+    menu.classList.contains("is-open") ? closeMenu() : openMenu();
+  });
+
+  if (backdrop) backdrop.addEventListener("click", closeMenu);
+
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape" && menu.classList.contains("is-open")) closeMenu();
+  });
+
+  /* Close button inside drawer */
+  const closeBtn = menu.querySelector(".mobile-menu-close");
+  if (closeBtn) {
+    const newClose = closeBtn.cloneNode(true);
+    closeBtn.parentNode.replaceChild(newClose, closeBtn);
+    newClose.addEventListener("click", closeMenu);
+  }
+
+  /* Close on any destination link tap */
+  menu.addEventListener("click", e => {
+    if (e.target.tagName === "A") closeMenu();
+  });
+
+})();
