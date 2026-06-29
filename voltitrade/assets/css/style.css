@@ -351,4 +351,158 @@ table.data-table { width: 100%; border-collapse: collapse; font-size: .88rem; }
 .text-center { text-align: center; }
 .mt-0 { margin-top: 0; }
 .mb-0 { margin-bottom: 0; }
-.badge { display: inline-block; padding: 4px 10px; border-radius: 6px; background: var(--gold-dim); color: var(--gold); font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+.badge { display: inline-block; padding: 4px 10px; border-radius: 6px; background: var(--gold-dim); color: var(--gold); font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; } 
+/* ============================================================
+   MOBILE NAV DROPDOWN FIX
+   Add this to your main stylesheet or as a separate file
+   linked after your existing CSS files.
+   ============================================================ */
+
+/* --- Ensure the mobile drawer sits on top of everything --- */
+.mobile-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;           /* full-screen takeover */
+  overflow-y: auto;        /* scroll if content is tall */
+  z-index: 9999;           /* above all other elements */
+  background: var(--bg-base, #0d0d12);
+  padding: 5rem 2rem 2rem; /* top padding clears the navbar */
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+
+  /* Hidden state */
+  transform: translateX(-100%);
+  visibility: hidden;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              visibility 0.3s;
+}
+
+/* Open state — toggled by JS adding .is-open to .mobile-drawer */
+.mobile-drawer.is-open {
+  transform: translateX(0);
+  visibility: visible;
+}
+
+/* --- Links inside the drawer --- */
+.mobile-drawer a {
+  display: block;
+  padding: 0.85rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-body, #e0e0e0);
+  border-bottom: 1px solid var(--border, rgba(255,255,255,0.08));
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.mobile-drawer a:hover,
+.mobile-drawer a.active {
+  color: var(--c-primary, #6C5CE7);
+}
+
+/* --- Inline sub-links (Resources dropdown items) --- */
+.mobile-drawer .mobile-sub-links {
+  display: flex;
+  flex-direction: column;
+  padding-left: 1rem;
+  border-left: 2px solid var(--c-primary, #6C5CE7);
+  margin-bottom: 0.25rem;
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.3s ease;
+}
+
+.mobile-drawer .mobile-sub-links.is-open {
+  max-height: 400px; /* tall enough to never clip */
+}
+
+.mobile-drawer .mobile-sub-links a {
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 0.55rem 0;
+  border-bottom: none;
+  color: var(--text-mist, #a0a0b0);
+}
+
+/* Parent toggle button for Resources */
+.mobile-drawer .mobile-parent-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--border, rgba(255,255,255,0.08));
+  padding: 0.85rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-body, #e0e0e0);
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.mobile-drawer .mobile-parent-btn svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  transition: transform 0.25s ease;
+  stroke: currentColor;
+}
+
+.mobile-drawer .mobile-parent-btn.is-open svg {
+  transform: rotate(180deg);
+}
+
+/* --- Backdrop overlay --- */
+.mobile-drawer-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 9998;
+  backdrop-filter: blur(2px);
+}
+
+.mobile-drawer-backdrop.is-open {
+  display: block;
+}
+
+/* --- Close (×) button inside drawer --- */
+.mobile-drawer-close {
+  position: absolute;
+  top: 1.1rem;
+  right: 1.25rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-body, #e0e0e0);
+  padding: 0.25rem;
+}
+
+.mobile-drawer-close svg {
+  width: 26px;
+  height: 26px;
+  stroke: currentColor;
+}
+
+/* CTA block at the bottom of the drawer */
+.mobile-drawer .hero-cta {
+  margin-top: auto;
+  padding-top: 1.5rem;
+}
+
+.mobile-drawer .btn-block {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+/* --- Keep the navbar itself above the drawer backdrop --- */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 10000;
+}
