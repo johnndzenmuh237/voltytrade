@@ -166,140 +166,126 @@
 
 })();
 /**
- * mobile-nav-fix.js
- * Drop this script at the bottom of <body>, after your existing scripts.
- * It rebuilds the mobile drawer with a working Resources accordion,
- * a backdrop, and a close button — no changes to your HTML needed.
+ * VAULTEX — MOBILE NAV FIX
+ * Paste at the bottom of assets/js/main.js
+ *
+ * Differences from NOVA:
+ *  - menu class  → .mobile-menu
+ *  - toggle class → .nav-burger
+ *  - dropdown    → "Earn" (Staking, Investment Plans, Savings & Yield, Launchpad)
  */
 
 (function () {
   "use strict";
 
   /* ── 1. Grab elements ──────────────────────────────────────── */
-  const navToggle   = document.querySelector(".nav-toggle");
-  const drawer      = document.querySelector(".mobile-drawer");
+  const navBurger = document.querySelector(".nav-burger");
+  const menu      = document.querySelector(".mobile-menu");
 
-  if (!navToggle || !drawer) return; // nothing to fix
+  if (!navBurger || !menu) return;
 
-  /* ── 2. Inject a backdrop div (once) ──────────────────────── */
-  let backdrop = document.querySelector(".mobile-drawer-backdrop");
+  /* ── 2. Backdrop ───────────────────────────────────────────── */
+  let backdrop = document.querySelector(".mobile-menu-backdrop");
   if (!backdrop) {
     backdrop = document.createElement("div");
-    backdrop.className = "mobile-drawer-backdrop";
+    backdrop.className = "mobile-menu-backdrop";
     document.body.appendChild(backdrop);
   }
 
-  /* ── 3. Inject a close button inside the drawer (once) ────── */
-  if (!drawer.querySelector(".mobile-drawer-close")) {
+  /* ── 3. Close (×) button ───────────────────────────────────── */
+  if (!menu.querySelector(".mobile-menu-close")) {
     const closeBtn = document.createElement("button");
-    closeBtn.className  = "mobile-drawer-close";
+    closeBtn.className = "mobile-menu-close";
     closeBtn.setAttribute("aria-label", "Close menu");
-    closeBtn.innerHTML  =
+    closeBtn.innerHTML =
       `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
          <path d="M18 6 6 18M6 6l12 12"/>
        </svg>`;
-    drawer.prepend(closeBtn);
-    closeBtn.addEventListener("click", closeDrawer);
+    menu.prepend(closeBtn);
+    closeBtn.addEventListener("click", closeMenu);
   }
 
-  /* ── 4. Rebuild the Resources section as an accordion ──────── */
-  //
-  // The original HTML lists Resources sub-links as flat <a> tags.
-  // We replace them with a toggle button + collapsible sub-list.
-  //
-  const subLinkDefs = [
-    { href: "whitepaper.html",                 label: "Whitepaper"    },
-    { href: "team.html",                        label: "Team"          },
-    { href: "faq.html",                         label: "FAQ"           },
-    { href: "blog.html",                        label: "Blog"          },
-    { href: "documentation/installation.html",  label: "Documentation" },
+  /* ── 4. Build "Earn" accordion ─────────────────────────────── */
+  const earnSubLinks = [
+    { href: "staking.html",      label: "Staking"            },
+    { href: "investments.html",  label: "Investment Plans"   },
+    { href: "earn.html",         label: "Savings & Yield"    },
+    { href: "launchpad.html",    label: "Launchpad"          },
   ];
 
-  // Remove any leftover flat sub-links that may already be in the drawer
-  // (they were added in the original HTML for the Resources section)
-  const existingSubHrefs = subLinkDefs.map(d => d.href);
-  drawer.querySelectorAll("a").forEach(a => {
-    if (existingSubHrefs.some(h => a.getAttribute("href") === h)) {
-      a.remove();
-    }
+  const earnHrefs = earnSubLinks.map(d => d.href);
+
+  // Remove the flat sub-links that are already in the HTML
+  menu.querySelectorAll("a").forEach(a => {
+    if (earnHrefs.includes(a.getAttribute("href"))) a.remove();
   });
 
-  // Find the Contact link — we'll insert the accordion before it
-  const contactLink = [...drawer.querySelectorAll("a")].find(
-    a => a.getAttribute("href") === "contact.html" &&
-         a.textContent.trim() === "Contact"
+  // Find the NFT Market link — insert accordion before it
+  const nftLink = [...menu.querySelectorAll("a")].find(
+    a => a.getAttribute("href") === "nft-marketplace.html"
   );
 
-  if (contactLink && !drawer.querySelector(".mobile-parent-btn")) {
-    // Build the accordion toggle
+  if (nftLink && !menu.querySelector(".mobile-parent-btn")) {
+    // Toggle button
     const parentBtn = document.createElement("button");
     parentBtn.className = "mobile-parent-btn";
     parentBtn.setAttribute("aria-expanded", "false");
     parentBtn.innerHTML =
-      `Resources
+      `Earn
        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
          <path d="M6 9l6 6 6-6"/>
        </svg>`;
 
-    // Build the collapsible sub-list
+    // Sub-link list
     const subList = document.createElement("div");
     subList.className = "mobile-sub-links";
-    subLinkDefs.forEach(({ href, label }) => {
+    earnSubLinks.forEach(({ href, label }) => {
       const a = document.createElement("a");
       a.href = href;
       a.textContent = label;
       subList.appendChild(a);
     });
 
-    // Toggle logic
+    // Toggle on click
     parentBtn.addEventListener("click", () => {
       const open = subList.classList.toggle("is-open");
       parentBtn.classList.toggle("is-open", open);
       parentBtn.setAttribute("aria-expanded", String(open));
     });
 
-    // Insert before the Contact link
-    drawer.insertBefore(parentBtn, contactLink);
-    drawer.insertBefore(subList, contactLink);
+    menu.insertBefore(parentBtn, nftLink);
+    menu.insertBefore(subList, nftLink);
   }
 
-  /* ── 5. Open / close helpers ───────────────────────────────── */
-  function openDrawer() {
-    drawer.classList.add("is-open");
+  /* ── 5. Open / close ───────────────────────────────────────── */
+  function openMenu() {
+    menu.classList.add("is-open");
     backdrop.classList.add("is-open");
-    navToggle.setAttribute("aria-expanded", "true");
-    document.body.style.overflow = "hidden"; // prevent page scroll
+    navBurger.setAttribute("aria-expanded", "true");
+    document.body.style.overflow = "hidden";
   }
 
-  function closeDrawer() {
-    drawer.classList.remove("is-open");
+  function closeMenu() {
+    menu.classList.remove("is-open");
     backdrop.classList.remove("is-open");
-    navToggle.setAttribute("aria-expanded", "false");
+    navBurger.setAttribute("aria-expanded", "false");
     document.body.style.overflow = "";
   }
 
-  /* ── 6. Wire up toggle button & backdrop ──────────────────── */
-  navToggle.addEventListener("click", () => {
-    const isOpen = drawer.classList.contains("is-open");
-    isOpen ? closeDrawer() : openDrawer();
+  /* ── 6. Wire up events ─────────────────────────────────────── */
+  navBurger.addEventListener("click", () => {
+    menu.classList.contains("is-open") ? closeMenu() : openMenu();
   });
 
-  backdrop.addEventListener("click", closeDrawer);
+  backdrop.addEventListener("click", closeMenu);
 
-  // Close on Escape key
   document.addEventListener("keydown", e => {
-    if (e.key === "Escape" && drawer.classList.contains("is-open")) {
-      closeDrawer();
-    }
+    if (e.key === "Escape" && menu.classList.contains("is-open")) closeMenu();
   });
 
-  // Close when a final destination link (not the Resources toggle) is tapped
-  drawer.querySelectorAll("a").forEach(a => {
-    a.addEventListener("click", closeDrawer);
-  });
-  // Also close on future sub-links added dynamically
-  drawer.addEventListener("click", e => {
-    if (e.target.tagName === "A") closeDrawer();
+  // Close when any final destination link is tapped
+  menu.addEventListener("click", e => {
+    if (e.target.tagName === "A") closeMenu();
   });
 
 })();
