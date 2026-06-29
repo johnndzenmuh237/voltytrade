@@ -86,3 +86,74 @@
   });
 
 })();
+/**
+ * VAULTEX DASHBOARD — MOBILE SIDEBAR FIX
+ * Paste at the bottom of assets/js/dashboard.js
+ *
+ * Handles:
+ *  - Burger button opens/closes the sidebar on mobile
+ *  - Backdrop click closes sidebar
+ *  - Escape key closes sidebar
+ *  - Nav links close sidebar on tap (mobile)
+ */
+
+(function () {
+  "use strict";
+
+  const burger  = document.querySelector(".sidebar-burger");
+  const sidebar = document.querySelector(".dash-sidebar");
+
+  if (!burger || !sidebar) return;
+
+  /* ── Inject backdrop ───────────────────────────────────────── */
+  let backdrop = document.querySelector(".sidebar-backdrop");
+  if (!backdrop) {
+    backdrop = document.createElement("div");
+    backdrop.className = "sidebar-backdrop";
+    document.body.appendChild(backdrop);
+  }
+
+  /* ── Open / close helpers ──────────────────────────────────── */
+  function openSidebar() {
+    sidebar.classList.add("is-open");
+    backdrop.classList.add("is-open");
+    document.body.style.overflow = "hidden";
+    burger.setAttribute("aria-expanded", "true");
+  }
+
+  function closeSidebar() {
+    sidebar.classList.remove("is-open");
+    backdrop.classList.remove("is-open");
+    document.body.style.overflow = "";
+    burger.setAttribute("aria-expanded", "false");
+  }
+
+  /* ── Wire up events ────────────────────────────────────────── */
+  burger.addEventListener("click", () => {
+    sidebar.classList.contains("is-open") ? closeSidebar() : openSidebar();
+  });
+
+  backdrop.addEventListener("click", closeSidebar);
+
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape" && sidebar.classList.contains("is-open")) {
+      closeSidebar();
+    }
+  });
+
+  /* Close sidebar when a nav link is tapped on mobile */
+  sidebar.querySelectorAll("a").forEach(a => {
+    a.addEventListener("click", () => {
+      if (window.innerWidth <= 768) closeSidebar();
+    });
+  });
+
+  /* ── Close sidebar on resize to desktop ────────────────────── */
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 768) {
+      backdrop.classList.remove("is-open");
+      document.body.style.overflow = "";
+    }
+  });
+
+})();
