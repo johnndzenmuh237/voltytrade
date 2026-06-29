@@ -7,8 +7,269 @@
 <meta name="description" content="Spot trading, conditional orders, and advanced charting — see how trading on Vaultex works before you dive into the live terminal.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<!-- External stylesheets kept for compatibility with main site -->
 <link rel="stylesheet" href="assets/css/style.css">
 <link rel="stylesheet" href="assets/css/responsive.css">
+
+<style>
+/* ─── Mobile-First Responsive Fixes for Exchange / Trade Page ─── */
+
+/* Reset box-sizing for all trade elements */
+*, *::before, *::after { box-sizing: border-box; }
+
+/* ── Navbar ── */
+.navbar .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  flex-wrap: nowrap;
+  gap: 8px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: nowrap;
+}
+
+/* ── Hero Section ── */
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+
+.hero-visual {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 16px;
+  padding: 24px;
+  overflow: hidden;
+}
+
+.hero-visual canvas {
+  width: 100% !important;
+  height: auto !important;
+  display: block;
+  max-width: 420px;
+}
+
+.pair {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pair-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .85rem;
+  opacity: .6;
+}
+
+.pair-price {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #22c55e;
+}
+
+/* ── Feature Cards Grid ── */
+.grid.cols-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.feature-card {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 16px;
+  padding: 28px 24px;
+}
+
+.feature-icon {
+  font-size: 1.5rem;
+  margin-bottom: 14px;
+  display: block;
+}
+
+.feature-card h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 10px;
+}
+
+.feature-card p {
+  font-size: .875rem;
+  line-height: 1.6;
+  opacity: .7;
+  margin: 0;
+}
+
+/* ── Hero CTA buttons ── */
+.hero-cta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 28px;
+}
+
+/* ── Footer ── */
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  gap: 32px;
+}
+
+/* ═══════════════════════════════════════════
+   MOBILE BREAKPOINTS
+   ═══════════════════════════════════════════ */
+
+/* ── Tablet: ≤ 900px ── */
+@media (max-width: 900px) {
+  /* Hero: stack vertically */
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .hero-visual {
+    max-width: 100%;
+  }
+
+  /* Feature cards: 2 column */
+  .grid.cols-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Footer: 2 column */
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ── Mobile: ≤ 600px ── */
+@media (max-width: 600px) {
+  /* Hero padding */
+  section.hero {
+    padding: 48px 0 32px !important;
+  }
+
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  /* Hero text */
+  .hero h1 {
+    font-size: clamp(1.5rem, 5vw, 2.4rem);
+    line-height: 1.25;
+  }
+
+  .hero-lede {
+    font-size: .9375rem;
+  }
+
+  /* CTA buttons stack on very narrow */
+  .hero-cta {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .hero-cta .btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Eyebrow label */
+  .eyebrow {
+    font-size: .75rem;
+    letter-spacing: .08em;
+  }
+
+  /* Visual card: tighten padding */
+  .hero-visual {
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  .pair-price {
+    font-size: 1.05rem;
+  }
+
+  /* Feature cards: single column */
+  .grid.cols-3 {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .feature-card {
+    padding: 22px 18px;
+    border-radius: 12px;
+  }
+
+  /* Section padding */
+  .section {
+    padding: 40px 0;
+  }
+
+  /* Container padding on mobile */
+  .container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  /* Footer: single column */
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 6px;
+    text-align: center;
+  }
+
+  /* Navbar: hide desktop links, show burger */
+  .nav-links {
+    display: none;
+  }
+
+  .nav-burger {
+    display: flex;
+  }
+
+  /* Social icons spacing */
+  .social-icons {
+    display: flex;
+    gap: 14px;
+    margin-top: 12px;
+    font-size: 1rem;
+  }
+}
+
+/* ── Very narrow: ≤ 380px ── */
+@media (max-width: 380px) {
+  .hero h1 {
+    font-size: 1.4rem;
+  }
+
+  .feature-card {
+    padding: 18px 14px;
+  }
+
+  .pair-name, .pair-price {
+    font-size: .8rem;
+  }
+}
+</style>
 </head>
 <body>
 
@@ -66,16 +327,32 @@
       </div>
     </div>
     <div class="hero-visual">
-      <div class="pair"><div><div class="pair-name">BTC / USDT</div></div><div class="pair-price">$67,230.12</div></div>
+      <div class="pair">
+        <div><div class="pair-name">BTC / USDT</div></div>
+        <div class="pair-price">$67,230.12</div>
+      </div>
       <canvas data-chart="candles" width="420" height="180"></canvas>
     </div>
   </div>
 </section>
+
 <section class="section">
   <div class="container grid cols-3">
-    <div class="feature-card"><div class="feature-icon">⌗</div><h3>Limit, market &amp; stop orders</h3><p>Set precise entries and exits, or move fast with market orders when timing matters most.</p></div>
-    <div class="feature-card"><div class="feature-icon">◫</div><h3>Real-time order book</h3><p>Full market depth updates instantly, so you always see where liquidity actually sits.</p></div>
-    <div class="feature-card"><div class="feature-icon">⌬</div><h3>API &amp; algo trading</h3><p>Connect your own bots and strategies through our REST and WebSocket API.</p></div>
+    <div class="feature-card">
+      <div class="feature-icon">⌗</div>
+      <h3>Limit, market &amp; stop orders</h3>
+      <p>Set precise entries and exits, or move fast with market orders when timing matters most.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">◫</div>
+      <h3>Real-time order book</h3>
+      <p>Full market depth updates instantly, so you always see where liquidity actually sits.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">⌬</div>
+      <h3>API &amp; algo trading</h3>
+      <p>Connect your own bots and strategies through our REST and WebSocket API.</p>
+    </div>
   </div>
 </section>
 
