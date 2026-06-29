@@ -165,3 +165,141 @@
   }
 
 })();
+/**
+ * mobile-nav-fix.js
+ * Drop this script at the bottom of <body>, after your existing scripts.
+ * It rebuilds the mobile drawer with a working Resources accordion,
+ * a backdrop, and a close button — no changes to your HTML needed.
+ */
+
+(function () {
+  "use strict";
+
+  /* ── 1. Grab elements ──────────────────────────────────────── */
+  const navToggle   = document.querySelector(".nav-toggle");
+  const drawer      = document.querySelector(".mobile-drawer");
+
+  if (!navToggle || !drawer) return; // nothing to fix
+
+  /* ── 2. Inject a backdrop div (once) ──────────────────────── */
+  let backdrop = document.querySelector(".mobile-drawer-backdrop");
+  if (!backdrop) {
+    backdrop = document.createElement("div");
+    backdrop.className = "mobile-drawer-backdrop";
+    document.body.appendChild(backdrop);
+  }
+
+  /* ── 3. Inject a close button inside the drawer (once) ────── */
+  if (!drawer.querySelector(".mobile-drawer-close")) {
+    const closeBtn = document.createElement("button");
+    closeBtn.className  = "mobile-drawer-close";
+    closeBtn.setAttribute("aria-label", "Close menu");
+    closeBtn.innerHTML  =
+      `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+         <path d="M18 6 6 18M6 6l12 12"/>
+       </svg>`;
+    drawer.prepend(closeBtn);
+    closeBtn.addEventListener("click", closeDrawer);
+  }
+
+  /* ── 4. Rebuild the Resources section as an accordion ──────── */
+  //
+  // The original HTML lists Resources sub-links as flat <a> tags.
+  // We replace them with a toggle button + collapsible sub-list.
+  //
+  const subLinkDefs = [
+    { href: "whitepaper.html",                 label: "Whitepaper"    },
+    { href: "team.html",                        label: "Team"          },
+    { href: "faq.html",                         label: "FAQ"           },
+    { href: "blog.html",                        label: "Blog"          },
+    { href: "documentation/installation.html",  label: "Documentation" },
+  ];
+
+  // Remove any leftover flat sub-links that may already be in the drawer
+  // (they were added in the original HTML for the Resources section)
+  const existingSubHrefs = subLinkDefs.map(d => d.href);
+  drawer.querySelectorAll("a").forEach(a => {
+    if (existingSubHrefs.some(h => a.getAttribute("href") === h)) {
+      a.remove();
+    }
+  });
+
+  // Find the Contact link — we'll insert the accordion before it
+  const contactLink = [...drawer.querySelectorAll("a")].find(
+    a => a.getAttribute("href") === "contact.html" &&
+         a.textContent.trim() === "Contact"
+  );
+
+  if (contactLink && !drawer.querySelector(".mobile-parent-btn")) {
+    // Build the accordion toggle
+    const parentBtn = document.createElement("button");
+    parentBtn.className = "mobile-parent-btn";
+    parentBtn.setAttribute("aria-expanded", "false");
+    parentBtn.innerHTML =
+      `Resources
+       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+         <path d="M6 9l6 6 6-6"/>
+       </svg>`;
+
+    // Build the collapsible sub-list
+    const subList = document.createElement("div");
+    subList.className = "mobile-sub-links";
+    subLinkDefs.forEach(({ href, label }) => {
+      const a = document.createElement("a");
+      a.href = href;
+      a.textContent = label;
+      subList.appendChild(a);
+    });
+
+    // Toggle logic
+    parentBtn.addEventListener("click", () => {
+      const open = subList.classList.toggle("is-open");
+      parentBtn.classList.toggle("is-open", open);
+      parentBtn.setAttribute("aria-expanded", String(open));
+    });
+
+    // Insert before the Contact link
+    drawer.insertBefore(parentBtn, contactLink);
+    drawer.insertBefore(subList, contactLink);
+  }
+
+  /* ── 5. Open / close helpers ───────────────────────────────── */
+  function openDrawer() {
+    drawer.classList.add("is-open");
+    backdrop.classList.add("is-open");
+    navToggle.setAttribute("aria-expanded", "true");
+    document.body.style.overflow = "hidden"; // prevent page scroll
+  }
+
+  function closeDrawer() {
+    drawer.classList.remove("is-open");
+    backdrop.classList.remove("is-open");
+    navToggle.setAttribute("aria-expanded", "false");
+    document.body.style.overflow = "";
+  }
+
+  /* ── 6. Wire up toggle button & backdrop ──────────────────── */
+  navToggle.addEventListener("click", () => {
+    const isOpen = drawer.classList.contains("is-open");
+    isOpen ? closeDrawer() : openDrawer();
+  });
+
+  backdrop.addEventListener("click", closeDrawer);
+
+  // Close on Escape key
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape" && drawer.classList.contains("is-open")) {
+      closeDrawer();
+    }
+  });
+
+  // Close when a final destination link (not the Resources toggle) is tapped
+  drawer.querySelectorAll("a").forEach(a => {
+    a.addEventListener("click", closeDrawer);
+  });
+  // Also close on future sub-links added dynamically
+  drawer.addEventListener("click", e => {
+    if (e.target.tagName === "A") closeDrawer();
+  });
+
+})();
