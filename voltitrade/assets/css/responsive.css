@@ -57,3 +57,188 @@
   .dash-topbar { flex-direction: column; align-items: stretch; }
   .dash-search { min-width: 0; }
 }
+/* =========================================================
+   VAULTEX — RESPONSIVE BREAKPOINTS
+   Companion to style.css
+   Breakpoints: 1024 / 768 / 480
+   ========================================================= */
+
+/* ---- Tablet landscape: ≤ 1024px ---- */
+@media (max-width: 1024px) {
+
+  /* Nav: tighten gap so links don't overflow */
+  .nav-links { gap: 18px; }
+  .nav-links a { font-size: .85rem; }
+
+  /* Hero: even columns */
+  .hero-grid { gap: 36px; }
+
+  /* Grids: drop to 2 columns */
+  .cols-3 { grid-template-columns: repeat(2, 1fr); }
+  .cols-4 { grid-template-columns: repeat(2, 1fr); }
+
+  /* Footer */
+  .footer-grid { grid-template-columns: 1fr 1fr 1fr; gap: 28px; }
+  .footer-grid .footer-col:first-child { grid-column: 1 / -1; }
+
+  /* Dashboard */
+  .dash-shell { grid-template-columns: 72px 1fr; }
+  .dash-sidebar .dash-nav a span,
+  .dash-sidebar .group-label,
+  .dash-sidebar .nav-logo .brand-name { display: none; }
+  .dash-sidebar .nav-logo { justify-content: center; padding-bottom: 24px; }
+  .dash-sidebar .dash-nav a { justify-content: center; padding: 12px; }
+  .dash-main { padding: 24px 20px; }
+}
+
+/* ---- Tablet portrait: ≤ 768px ---- */
+@media (max-width: 768px) {
+
+  /* --- Navbar: hide desktop links, show burger --- */
+  .nav-links { display: none; }
+  .nav-burger { display: flex; }
+
+  /* Shrink nav action buttons */
+  .nav-actions .btn-ghost { display: none; }   /* hide Log in, keep Get started */
+  .nav-actions { gap: 8px; }
+
+  /* --- Hero: stack --- */
+  .hero { padding: 64px 0 48px !important; }
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .hero-lede { font-size: 1rem; max-width: 100%; }
+  .hero-cta { gap: 12px; }
+
+  /* Hero visual full width */
+  .hero-visual { padding: 20px; }
+  .hero-visual .pair-price { font-size: 1.3rem; }
+
+  /* --- Grids: single column --- */
+  .cols-3 { grid-template-columns: 1fr; }
+  .cols-4 { grid-template-columns: repeat(2, 1fr); }
+  .cols-2 { grid-template-columns: 1fr; }
+
+  /* --- Stats band --- */
+  .stats-band .grid { grid-template-columns: repeat(2, 1fr); }
+
+  /* --- Auth page: single column --- */
+  .auth-shell { grid-template-columns: 1fr; }
+  .auth-side { display: none; }   /* hide decorative side on mobile */
+  .auth-form-wrap { padding: 40px 20px; }
+
+  /* --- Dashboard: off-canvas sidebar --- */
+  .dash-shell { grid-template-columns: 1fr; }
+  .dash-sidebar {
+    position: fixed;
+    left: -260px;
+    top: 0;
+    width: 260px;
+    height: 100vh;
+    z-index: 200;
+    transition: left .25s cubic-bezier(.2,.8,.2,1);
+  }
+  .dash-sidebar.open { left: 0; }
+  .dash-sidebar .dash-nav a span,
+  .dash-sidebar .group-label,
+  .dash-sidebar .nav-logo .brand-name { display: unset; }
+  .dash-sidebar .dash-nav a { justify-content: flex-start; padding: 11px 14px; }
+  .sidebar-burger { display: flex; }
+  .dash-main { padding: 20px 16px; }
+  .dash-topbar { flex-direction: column; align-items: flex-start; }
+  .dash-search { min-width: unset; width: 100%; }
+
+  /* --- Footer: 2 columns --- */
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+  }
+  .footer-grid .footer-col:first-child { grid-column: 1 / -1; }
+  .footer { padding: 48px 0 28px; }
+}
+
+/* ---- Mobile: ≤ 480px ---- */
+@media (max-width: 480px) {
+
+  /* Container breathing room */
+  .container { padding: 0 16px; }
+
+  /* Section spacing */
+  .section { padding: 56px 0; }
+  .section-sm { padding: 40px 0; }
+
+  /* Typography scale down */
+  h1 { font-size: clamp(1.7rem, 8vw, 2.6rem); }
+  h2 { font-size: clamp(1.4rem, 6vw, 2rem); }
+  h3 { font-size: 1.1rem; }
+
+  /* --- Hero --- */
+  .hero { padding: 48px 0 36px !important; }
+  .hero-cta {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .hero-cta .btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .hero-trust { gap: 20px; }
+  .hero-trust strong { font-size: 1.2rem; }
+
+  /* Hero visual card */
+  .hero-visual { padding: 16px; border-radius: var(--radius-md); }
+  .hero-visual .pair { flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+  .hero-visual .pair-name { font-size: 1rem; }
+  .hero-visual .pair-price { font-size: 1.1rem; }
+  .hero-visual canvas { height: 140px !important; }
+
+  /* --- Feature cards --- */
+  .feature-card { padding: 22px 18px; }
+  .cols-4 { grid-template-columns: 1fr; }
+
+  /* --- Stats band: single column --- */
+  .stats-band .grid { grid-template-columns: 1fr; }
+  .stat-item strong { font-size: 1.8rem; }
+
+  /* --- Pricing cards full width --- */
+  .price-card { padding: 28px 20px; }
+
+  /* --- Tables: allow horizontal scroll --- */
+  .widget { padding: 16px; overflow-x: auto; }
+  table.data-table { min-width: 520px; }
+
+  /* --- Auth --- */
+  .auth-card { max-width: 100%; }
+  .field-row { flex-direction: column; gap: 0; }
+  .otp-row input { width: 42px; height: 48px; font-size: 1.2rem; }
+  .social-row { grid-template-columns: 1fr; }
+
+  /* --- Footer: single column --- */
+  .footer-grid { grid-template-columns: 1fr; }
+  .footer-grid .footer-col:first-child { grid-column: auto; }
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+    gap: 8px;
+  }
+
+  /* --- Dashboard --- */
+  .dash-main { padding: 16px 14px; }
+  .balance-amount { font-size: 2rem; }
+  .widget-head { flex-wrap: wrap; gap: 10px; }
+
+  /* --- Navbar actions: only show icon + one button --- */
+  .theme-toggle { width: 34px; height: 34px; font-size: .85rem; }
+  .btn-sm { padding: 7px 13px; font-size: .8rem; }
+}
+
+/* ---- Very small: ≤ 360px ---- */
+@media (max-width: 360px) {
+  .nav-logo .brand-name { display: none; } /* show only V mark */
+  h1 { font-size: 1.5rem; }
+  .hero-visual .pair-price { font-size: 1rem; }
+  .feature-card { padding: 18px 14px; }
+  .otp-row { gap: 6px; }
+  .otp-row input { width: 36px; height: 42px; }
+}
