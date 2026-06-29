@@ -38,3 +38,204 @@
 .order-book .row { display: grid; grid-template-columns: 1fr 1fr 1fr; font-family: var(--font-mono); font-size: .82rem; padding: 5px 0; position: relative; }
 .order-book .row.ask { color: var(--coral); }
 .order-book .row.bid { color: var(--mint); }
+/* ============================================================
+   VAULTEX DASHBOARD — MOBILE RESPONSIVE FIX
+   Paste at the bottom of assets/css/dashboard.css
+   ============================================================ */
+
+/* ── Base mobile reset ─────────────────────────────────────── */
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* ── Shell: stack sidebar + main vertically on mobile ──────── */
+.dash-shell {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* ── SIDEBAR ───────────────────────────────────────────────── */
+.dash-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  height: 100dvh;
+  width: 260px;
+  z-index: 9999;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              visibility 0.3s;
+  flex-shrink: 0;
+}
+
+/* ── MAIN CONTENT ──────────────────────────────────────────── */
+.dash-main {
+  flex: 1;
+  min-width: 0; /* prevents flex blowout */
+  overflow-x: hidden;
+}
+
+/* ── TOPBAR ────────────────────────────────────────────────── */
+.dash-topbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 16px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.dash-topbar > div:last-child {
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.dash-search {
+  min-width: 0;
+  flex: 1;
+}
+
+.dash-search input {
+  width: 100%;
+  min-width: 0;
+}
+
+/* ── SIDEBAR BACKDROP ──────────────────────────────────────── */
+.sidebar-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 9998;
+  backdrop-filter: blur(2px);
+}
+
+.sidebar-backdrop.is-open {
+  display: block;
+}
+
+/* ============================================================
+   MOBILE — max 768px
+   ============================================================ */
+@media (max-width: 768px) {
+
+  /* Sidebar hidden off-screen by default */
+  .dash-sidebar {
+    transform: translateX(-100%);
+    visibility: hidden;
+  }
+
+  .dash-sidebar.is-open {
+    transform: translateX(0);
+    visibility: visible;
+  }
+
+  /* Main takes full width */
+  .dash-main {
+    width: 100%;
+    margin-left: 0 !important;
+    padding: 0;
+  }
+
+  /* Topbar stacks nicely */
+  .dash-topbar {
+    flex-direction: column;
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .dash-topbar > div:last-child {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .dash-search {
+    width: 100%;
+    flex: 1 1 100%;
+  }
+
+  /* Show the burger button */
+  .sidebar-burger {
+    display: inline-flex !important;
+  }
+
+  /* ── Cards & Widgets ─────────────────────────────────────── */
+  .dash-grid-2,
+  .dash-grid-3 {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+  }
+
+  .balance-card,
+  .widget,
+  .quick-stat {
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Balance amount font size */
+  .balance-amount {
+    font-size: 2rem !important;
+  }
+
+  /* Allocation chart row wraps */
+  .widget .flex {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  /* ── Data table scrolls horizontally ─────────────────────── */
+  .data-table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* ── Notification panel full width on mobile ─────────────── */
+  #notif-panel {
+    right: 8px !important;
+    left: 8px !important;
+    width: auto !important;
+    top: auto !important;
+    bottom: 80px !important;
+  }
+}
+
+/* ============================================================
+   DESKTOP — sidebar always visible
+   ============================================================ */
+@media (min-width: 769px) {
+
+  .dash-sidebar {
+    transform: translateX(0) !important;
+    visibility: visible !important;
+    position: sticky !important;
+    top: 0 !important;
+    height: 100vh !important;
+    align-self: flex-start;
+  }
+
+  .dash-main {
+    margin-left: 0;
+  }
+
+  /* Hide burger on desktop */
+  .sidebar-burger {
+    display: none !important;
+  }
+}
