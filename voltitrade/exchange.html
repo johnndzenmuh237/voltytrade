@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trade BTC/USDT — Vaultex Exchange</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/exchange.css">
+<link rel="stylesheet" href="assets/css/responsive.css">
+</head>
+<body>
+
+<header class="navbar">
+  <div class="container">
+    <a href="index.html" class="nav-logo"><span class="mark">V</span><span class="brand-name">Vaultex</span></a>
+    <nav class="nav-links">
+      <a href="markets.html">Markets</a>
+      <a href="exchange.html" class="active">Trade</a>
+      <a href="staking.html">Earn</a>
+      <a href="nft-marketplace.html">NFT Market</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="theme-toggle" aria-label="Toggle theme">☾</button>
+      <a href="dashboard/dashboard.html" class="btn btn-ghost btn-sm">Dashboard</a>
+      <a href="auth/register.html" class="btn btn-primary btn-sm">Deposit</a>
+      <button class="nav-burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="mobile-menu">
+    <a href="markets.html">Markets</a><a href="exchange.html">Trade</a><a href="staking.html">Earn</a><a href="dashboard/dashboard.html">Dashboard</a>
+  </div>
+</header>
+
+<main class="trade-shell">
+
+  <!-- Pairs list -->
+  <div class="pairs-list">
+    <div class="search-box"><input type="text" placeholder="Search pair" data-pair-search></div>
+    <div class="tab-row" style="width:100%;margin-bottom:10px;">
+      <button class="active">USDT</button><button>BTC</button><button>Favorites</button>
+    </div>
+    <div class="pair-row"><span class="name">BTC/USDT</span><span class="mono delta-up">67,230.12</span></div>
+    <div class="pair-row"><span class="name">ETH/USDT</span><span class="mono delta-up">3,489.55</span></div>
+    <div class="pair-row"><span class="name">SOL/USDT</span><span class="mono delta-down">178.40</span></div>
+    <div class="pair-row"><span class="name">BNB/USDT</span><span class="mono delta-up">612.30</span></div>
+    <div class="pair-row"><span class="name">XRP/USDT</span><span class="mono delta-down">0.612</span></div>
+    <div class="pair-row"><span class="name">ADA/USDT</span><span class="mono delta-up">0.452</span></div>
+    <div class="pair-row"><span class="name">DOGE/USDT</span><span class="mono delta-up">0.158</span></div>
+    <div class="pair-row"><span class="name">AVAX/USDT</span><span class="mono delta-down">39.21</span></div>
+    <div class="pair-row"><span class="name">DOT/USDT</span><span class="mono delta-up">6.88</span></div>
+    <div class="pair-row"><span class="name">LINK/USDT</span><span class="mono delta-up">14.62</span></div>
+  </div>
+
+  <!-- Chart panel -->
+  <div class="chart-panel">
+    <div class="chart-toolbar">
+      <div>
+        <strong style="font-family:var(--font-display);font-size:1.1rem;">BTC/USDT</strong>
+        <div class="price-now delta-up">$67,230.12 <span style="font-size:.8rem;">+2.31%</span></div>
+      </div>
+      <div class="timeframe-row">
+        <button>1H</button><button class="active">4H</button><button>1D</button><button>1W</button><button>1M</button>
+      </div>
+    </div>
+    <div class="chart-canvas-wrap">
+      <canvas data-chart="candles" width="800" height="400"></canvas>
+    </div>
+    <div class="bottom-panel">
+      <div class="bottom-tabs">
+        <button class="active">Open orders</button>
+        <button>Order history</button>
+        <button>Trade history</button>
+        <button>Funds</button>
+      </div>
+      <div class="empty-state">
+        <div class="ico">▣</div>
+        <p class="mb-0">No open orders yet. Place your first order to see it here.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Order panel -->
+  <div class="order-panel">
+    <h3 style="margin-bottom:14px;">Order book</h3>
+    <div class="order-book" data-order-book style="margin-bottom:24px;"></div>
+
+    <div class="order-form">
+      <div class="side-row">
+        <button class="buy active">Buy</button>
+        <button class="sell">Sell</button>
+      </div>
+      <div class="tab-row"><button class="active">Limit</button><button>Market</button><button>Stop</button></div>
+      <div class="field">
+        <label>Price (USDT)</label>
+        <input type="text" value="67,230.12">
+      </div>
+      <div class="field">
+        <label>Amount (BTC)</label>
+        <input type="text" placeholder="0.00">
+      </div>
+      <div class="field">
+        <label>Total (USDT)</label>
+        <input type="text" placeholder="0.00">
+      </div>
+      <p class="field-hint" style="margin-bottom:18px;">Available: 5,200.00 USDT</p>
+      <button class="btn btn-primary btn-block" data-submit-order>Buy BTC</button>
+    </div>
+  </div>
+
+</main>
+
+<script src="assets/js/main.js"></script>
+<script src="assets/js/charts.js"></script>
+<script src="assets/js/trading.js"></script>
+</body>
+</html>

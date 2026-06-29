@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vaultex</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="../assets/css/responsive.css">
+</head>
+<body>
+
+<div class="auth-form-wrap" style="min-height:100vh;">
+  <div class="auth-card text-center">
+    <a href="../index.html" class="nav-logo" style="justify-content:center;margin-bottom:32px;"><span class="mark">V</span><span class="brand-name">Vaultex</span></a>
+    
+    <div class="feature-icon" style="margin:0 auto 18px;">✉</div>
+    <h2>Verify your email</h2>
+    <p>We sent a confirmation link to your inbox. Click it to activate your account.</p>
+    <button class="btn btn-ghost btn-block" id="resend-btn">Resend verification email</button>
+    <p style="margin-top:24px;font-size:.85rem;"><a href="login.html" style="color:var(--mint);">← Back to log in</a></p>
+
+  </div>
+</div>
+
+<script src="../assets/js/main.js"></script>
+<script>
+document.getElementById('resend-btn').addEventListener('click', function(){
+  this.textContent = 'Sent! Check your inbox.';
+  this.disabled = true;
+});
+</script>
+</body>
+</html>
