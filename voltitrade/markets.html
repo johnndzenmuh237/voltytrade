@@ -117,7 +117,11 @@
   const API_BASE = "https://api.coingecko.com/api/v3/coins/markets";
   const PER_PAGE = 250;          // CoinGecko max per page
   const PAGES_TO_FETCH = 2;      // 2 x 250 = 500 assets fetched, we show 350+
-  const REFRESH_MS = 30000;      // live refresh interval
+  const REFRESH_MS = 45000;      // background refresh interval
+  const FETCH_TIMEOUT_MS = 8000; // give up on a slow request and fall back
+  const MAX_RETRIES = 2;
+  const CACHE_KEY = "vaultex_markets_cache_v1";
+  const CACHE_TTL_MS = 5 * 60 * 1000; // serve cache instantly if under 5 min old
 
   const tbody = document.querySelector("[data-markets-table]");
   const searchInput = document.querySelector('input[placeholder="Search by name or symbol"]');
@@ -128,6 +132,75 @@
   let allCoins = [];          // raw data from API
   let currentTab = "All";
   let currentQuery = "";
+  let hasRenderedOnce = false;
+
+  // ---------- skeleton ----------
+  function renderSkeleton(rowCount = 12) {
+    const rows = Array.from({ length: rowCount }, () => `
+      <tr class="skeleton-row">
+        <td><span class="sk sk-xs"></span></td>
+        <td>
+          <div class="flex" style="gap:10px;align-items:center;">
+            <span class="sk sk-circle"></span>
+            <div>
+              <span class="sk sk-md" style="display:block;margin-bottom:6px;"></span>
+              <span class="sk sk-xs"></span>
+            </div>
+          </div>
+        </td>
+        <td><span class="sk sk-sm"></span></td>
+        <td><span class="sk sk-sm"></span></td>
+        <td><span class="sk sk-sm"></span></td>
+        <td><span class="sk sk-sm"></span></td>
+        <td><span class="sk sk-xs"></span></td>
+      </tr>`).join("");
+    tbody.innerHTML = rows;
+  }
+
+  // ---------- cache (stale-while-revalidate) ----------
+  function readCache() {
+    try {
+      const raw = localStorage.getItem(CACHE_KEY);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      if (!parsed.data || !Array.isArray(parsed.data) || !parsed.ts) return null;
+      return parsed;
+    } catch {
+      return null;
+    }
+  }
+
+  function writeCache(data) {
+    try {
+      localStorage.setItem(CACHE_KEY, JSON.stringify({ data, ts: Date.now() }));
+    } catch {
+      // storage full/unavailable — fine, just skip caching
+    }
+  }
+
+  // ---------- fetch with timeout + retry ----------
+  function fetchWithTimeout(url, timeoutMs) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    return fetch(url, { signal: controller.signal }).finally(() => clearTimeout(timer));
+  }
+
+  async function fetchPageWithRetry(page, attempt = 0) {
+    try {
+      const res = await fetchWithTimeout(
+        `${API_BASE}?vs_currency=usd&order=market_cap_desc&per_page=${PER_PAGE}&page=${page}&price_change_percentage=24h&sparkline=false`,
+        FETCH_TIMEOUT_MS
+      );
+      if (!res.ok) throw new Error(`Market feed error: ${res.status}`);
+      return await res.json();
+    } catch (err) {
+      if (attempt < MAX_RETRIES) {
+        await new Promise(r => setTimeout(r, 400 * (attempt + 1)));
+        return fetchPageWithRetry(page, attempt + 1);
+      }
+      throw err;
+    }
+  }
 
   // ---------- formatting helpers ----------
   function fmtPrice(n) {
@@ -156,21 +229,55 @@
     return res.json();
   }
 
-  async function loadMarkets() {
+  async function loadFresh() {
     try {
-      const pages = await Promise.all(
-        Array.from({ length: PAGES_TO_FETCH }, (_, i) => fetchPage(i + 1))
-      );
-      allCoins = pages.flat();
+      // Page 1 first — paints the whole visible table fast.
+      const page1 = await fetchPageWithRetry(1);
+      allCoins = page1;
       render();
+      hasRenderedOnce = true;
+      writeCache(allCoins);
+
+      // Remaining pages load quietly in the background and merge in.
+      if (PAGES_TO_FETCH > 1) {
+        const rest = await Promise.allSettled(
+          Array.from({ length: PAGES_TO_FETCH - 1 }, (_, i) => fetchPageWithRetry(i + 2))
+        );
+        const extra = rest
+          .filter(r => r.status === "fulfilled")
+          .flatMap(r => r.value);
+        if (extra.length) {
+          allCoins = [...allCoins, ...extra];
+          writeCache(allCoins);
+          render();
+        }
+      }
     } catch (err) {
       console.error("Vaultex live markets: failed to load", err);
-      if (allCoins.length === 0) {
+      if (!hasRenderedOnce) {
         tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:32px;color:var(--muted);">
           Live market feed temporarily unavailable. Retrying…
         </td></tr>`;
       }
     }
+  }
+
+  function loadMarkets() {
+    // 1. Instant paint from cache if we have it (stale-while-revalidate)
+    const cached = readCache();
+    if (!hasRenderedOnce && cached && cached.data.length) {
+      allCoins = cached.data;
+      render();
+      hasRenderedOnce = true;
+    } else if (!hasRenderedOnce) {
+      renderSkeleton();
+    }
+    // 2. Skip the network round-trip entirely if cache is still very fresh
+    if (cached && Date.now() - cached.ts < CACHE_TTL_MS && hasRenderedOnce) {
+      return;
+    }
+    // 3. Otherwise fetch fresh data in the background (doesn't block UI)
+    loadFresh();
   }
 
   // ---------- filtering ----------
@@ -250,11 +357,17 @@
     });
   });
 
-  // minimal styles for up/down coloring if not already defined in style.css
+  // minimal styles for up/down coloring + skeleton loading state
   const style = document.createElement("style");
   style.textContent = `
     .text-up { color: #16c784 !important; }
     .text-down { color: #ea3943 !important; }
+    .sk { display:inline-block; border-radius:6px; background:linear-gradient(90deg, rgba(255,255,255,.06) 25%, rgba(255,255,255,.14) 37%, rgba(255,255,255,.06) 63%); background-size:400% 100%; animation:sk-shimmer 1.4s ease infinite; }
+    .sk-xs { width:32px; height:12px; }
+    .sk-sm { width:64px; height:12px; }
+    .sk-md { width:120px; height:12px; }
+    .sk-circle { width:24px; height:24px; border-radius:50%; flex-shrink:0; }
+    @keyframes sk-shimmer { 0% { background-position:100% 0; } 100% { background-position:0 0; } }
   `;
   document.head.appendChild(style);
 
