@@ -107,5 +107,160 @@
 
 <script src="assets/js/main.js"></script>
 <script src="assets/js/charts.js"></script>
+<script>
+/**
+ * Vaultex — Live Markets
+ * Populates #markets-table from a public live market-data feed (CoinGecko /coins/markets).
+ * No API key required.
+ */
+(function () {
+  const API_BASE = "https://api.coingecko.com/api/v3/coins/markets";
+  const PER_PAGE = 250;          // CoinGecko max per page
+  const PAGES_TO_FETCH = 2;      // 2 x 250 = 500 assets fetched, we show 350+
+  const REFRESH_MS = 30000;      // live refresh interval
+
+  const tbody = document.querySelector("[data-markets-table]");
+  const searchInput = document.querySelector('input[placeholder="Search by name or symbol"]');
+  const tabButtons = document.querySelectorAll(".tab-row button");
+
+  if (!tbody) return;
+
+  let allCoins = [];          // raw data from API
+  let currentTab = "All";
+  let currentQuery = "";
+
+  // ---------- formatting helpers ----------
+  function fmtPrice(n) {
+    if (n == null) return "—";
+    if (n >= 1) return "$" + n.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 });
+    if (n >= 0.01) return "$" + n.toFixed(4);
+    return "$" + n.toPrecision(3);
+  }
+
+  function fmtCompact(n) {
+    if (n == null) return "—";
+    return "$" + Intl.NumberFormat("en", { notation: "compact", maximumFractionDigits: 2 }).format(n);
+  }
+
+  function fmtPct(n) {
+    if (n == null) return "—";
+    const sign = n > 0 ? "+" : "";
+    return `${sign}${n.toFixed(2)}%`;
+  }
+
+  // ---------- fetch ----------
+  async function fetchPage(page) {
+    const url = `${API_BASE}?vs_currency=usd&order=market_cap_desc&per_page=${PER_PAGE}&page=${page}&price_change_percentage=24h&sparkline=false`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`Market feed error: ${res.status}`);
+    return res.json();
+  }
+
+  async function loadMarkets() {
+    try {
+      const pages = await Promise.all(
+        Array.from({ length: PAGES_TO_FETCH }, (_, i) => fetchPage(i + 1))
+      );
+      allCoins = pages.flat();
+      render();
+    } catch (err) {
+      console.error("Vaultex live markets: failed to load", err);
+      if (allCoins.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:32px;color:var(--muted);">
+          Live market feed temporarily unavailable. Retrying…
+        </td></tr>`;
+      }
+    }
+  }
+
+  // ---------- filtering ----------
+  function getFiltered() {
+    let rows = allCoins;
+
+    if (currentTab === "Gainers") {
+      rows = rows.filter(c => (c.price_change_percentage_24h ?? 0) > 0);
+      rows = [...rows].sort((a, b) => (b.price_change_percentage_24h ?? 0) - (a.price_change_percentage_24h ?? 0));
+    } else if (currentTab === "Losers") {
+      rows = rows.filter(c => (c.price_change_percentage_24h ?? 0) < 0);
+      rows = [...rows].sort((a, b) => (a.price_change_percentage_24h ?? 0) - (b.price_change_percentage_24h ?? 0));
+    }
+    // "Spot" and "All" both show the full live list (this site lists spot assets only)
+
+    if (currentQuery) {
+      const q = currentQuery.toLowerCase();
+      rows = rows.filter(
+        c => c.name.toLowerCase().includes(q) || c.symbol.toLowerCase().includes(q)
+      );
+    }
+
+    return rows;
+  }
+
+  // ---------- render ----------
+  function render() {
+    const rows = getFiltered();
+
+    if (rows.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:32px;color:var(--muted);">
+        No assets match your search.
+      </td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = rows
+      .map((c, i) => {
+        const pct = c.price_change_percentage_24h;
+        const pctClass = pct == null ? "" : pct >= 0 ? "text-up" : "text-down";
+        return `
+        <tr>
+          <td>${c.market_cap_rank ?? i + 1}</td>
+          <td>
+            <div class="flex" style="gap:10px;align-items:center;">
+              <img src="${c.image}" alt="${c.symbol}" width="24" height="24" style="border-radius:50%;" loading="lazy">
+              <div>
+                <div style="font-weight:600;">${c.name}</div>
+                <div style="color:var(--muted);font-size:.78rem;text-transform:uppercase;">${c.symbol}</div>
+              </div>
+            </div>
+          </td>
+          <td style="font-family:'JetBrains Mono',monospace;">${fmtPrice(c.current_price)}</td>
+          <td class="${pctClass}" style="font-family:'JetBrains Mono',monospace;">${fmtPct(pct)}</td>
+          <td>${fmtCompact(c.market_cap)}</td>
+          <td>${fmtCompact(c.total_volume)}</td>
+          <td><a href="exchange.html?pair=${c.symbol.toUpperCase()}USDT" class="btn btn-ghost btn-sm">Trade</a></td>
+        </tr>`;
+      })
+      .join("");
+  }
+
+  // ---------- wiring ----------
+  if (searchInput) {
+    searchInput.addEventListener("input", e => {
+      currentQuery = e.target.value.trim();
+      render();
+    });
+  }
+
+  tabButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      tabButtons.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      currentTab = btn.textContent.trim();
+      render();
+    });
+  });
+
+  // minimal styles for up/down coloring if not already defined in style.css
+  const style = document.createElement("style");
+  style.textContent = `
+    .text-up { color: #16c784 !important; }
+    .text-down { color: #ea3943 !important; }
+  `;
+  document.head.appendChild(style);
+
+  loadMarkets();
+  setInterval(loadMarkets, REFRESH_MS);
+})();
+</script>
 </body>
 </html>
