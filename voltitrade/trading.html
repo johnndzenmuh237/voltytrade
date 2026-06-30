@@ -52,7 +52,7 @@ body {
   font-size: 14px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
-  overflow: hidden;   /* terminal fills the screen */
+  overflow: hidden;
   height: 100vh;
   height: 100dvh;
   display: flex;
@@ -63,7 +63,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 input { font-family: inherit; }
 
 /* ============================================================
-   NAVBAR  (compact — terminal uses vertical space)
+   NAVBAR
    ============================================================ */
 .navbar {
   flex-shrink: 0;
@@ -85,19 +85,11 @@ input { font-family: inherit; }
   display: flex; align-items: center; justify-content: center;
   color: #04150F; font-weight: 800; font-family: var(--font-mono); font-size: .8rem;
 }
-.nav-center {
-  display: flex; align-items: center; gap: 24px; flex: 1;
-}
-.nav-links {
-  display: flex; align-items: center; gap: 22px;
-}
-.nav-links a {
-  color: var(--muted); font-size: .82rem; font-weight: 500;
-  transition: color .15s; white-space: nowrap;
-}
+.nav-center { display: flex; align-items: center; gap: 24px; flex: 1; }
+.nav-links { display: flex; align-items: center; gap: 22px; }
+.nav-links a { color: var(--muted); font-size: .82rem; font-weight: 500; transition: color .15s; white-space: nowrap; }
 .nav-links a:hover, .nav-links a.active { color: var(--paper); }
 
-/* Pair selector in navbar */
 .nav-pair-select {
   display: flex; align-items: center; gap: 10px;
   padding: 5px 12px; border-radius: var(--radius-sm);
@@ -115,9 +107,7 @@ input { font-family: inherit; }
 .nav-stat .lbl { color: var(--muted); }
 .nav-stat .val { color: var(--paper); }
 
-.nav-actions {
-  display: flex; align-items: center; gap: 8px; margin-left: auto; flex-shrink: 0;
-}
+.nav-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; flex-shrink: 0; }
 .btn {
   display: inline-flex; align-items: center; justify-content: center;
   gap: 6px; padding: 7px 14px; border-radius: var(--radius-sm);
@@ -143,28 +133,21 @@ input { font-family: inherit; }
 }
 .nav-burger span { width: 20px; height: 2px; background: var(--paper); border-radius: 2px; display: block; }
 
-/* Ticker strip */
 .ticker-strip {
   flex-shrink: 0; height: 32px;
   background: var(--ink); border-bottom: 1px solid var(--line);
   overflow: hidden; white-space: nowrap;
   display: flex; align-items: center;
 }
-.ticker-track {
-  display: inline-flex; align-items: center; gap: 40px;
-  animation: ticker-scroll 40s linear infinite;
-}
-.ticker-item {
-  display: inline-flex; gap: 6px; align-items: center;
-  font-family: var(--font-mono); font-size: .72rem; color: var(--muted);
-}
+.ticker-track { display: inline-flex; align-items: center; gap: 40px; animation: ticker-scroll 40s linear infinite; }
+.ticker-item { display: inline-flex; gap: 6px; align-items: center; font-family: var(--font-mono); font-size: .72rem; color: var(--muted); }
 .ticker-item .sym { color: var(--paper); font-weight: 600; }
 .up  { color: var(--mint); }
 .dn  { color: var(--coral); }
 @keyframes ticker-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
 /* ============================================================
-   TRADE SHELL  — 3-column terminal grid
+   TRADE SHELL — 3-column terminal grid (desktop ≥1024px)
    ============================================================ */
 .trade-shell {
   flex: 1;
@@ -175,7 +158,6 @@ input { font-family: inherit; }
   min-height: 0;
 }
 
-/* ── Column 1: Pairs list ── */
 .pairs-col {
   background: var(--ink-soft);
   border-right: 1px solid var(--line);
@@ -183,11 +165,7 @@ input { font-family: inherit; }
   overflow: hidden;
   grid-row: 1 / 3;
 }
-.pairs-head {
-  padding: 10px 10px 8px;
-  border-bottom: 1px solid var(--line);
-  flex-shrink: 0;
-}
+.pairs-head { padding: 10px 10px 8px; border-bottom: 1px solid var(--line); flex-shrink: 0; }
 .search-input {
   width: 100%; padding: 6px 10px;
   background: var(--ink-raise); border: 1px solid var(--line);
@@ -196,9 +174,7 @@ input { font-family: inherit; }
   transition: border-color .15s; margin-bottom: 8px;
 }
 .search-input:focus { border-color: var(--mint); }
-.tab-row {
-  display: flex; gap: 2px;
-}
+.tab-row { display: flex; gap: 2px; }
 .tab-row button {
   flex: 1; padding: 4px 6px; border-radius: 4px; font-size: .7rem;
   font-family: var(--font-mono); color: var(--muted); border: none;
@@ -223,11 +199,7 @@ input { font-family: inherit; }
 .delta-up { color: var(--mint); }
 .delta-down { color: var(--coral); }
 
-/* ── Column 2: Chart ── */
-.chart-col {
-  display: flex; flex-direction: column; overflow: hidden;
-  background: var(--ink);
-}
+.chart-col { display: flex; flex-direction: column; overflow: hidden; background: var(--ink); min-height: 0; }
 
 .chart-toolbar {
   flex-shrink: 0;
@@ -237,10 +209,7 @@ input { font-family: inherit; }
 }
 .toolbar-pair { display: flex; align-items: baseline; gap: 10px; }
 .toolbar-pair strong { font-family: var(--font-display); font-size: .95rem; }
-.toolbar-price {
-  font-family: var(--font-mono); font-size: 1.05rem;
-  color: var(--mint); font-weight: 700;
-}
+.toolbar-price { font-family: var(--font-mono); font-size: 1.05rem; color: var(--mint); font-weight: 700; }
 .toolbar-chg { font-family: var(--font-mono); font-size: .72rem; color: var(--mint); }
 .toolbar-stats { display: flex; gap: 18px; flex-wrap: wrap; }
 .t-stat { font-family: var(--font-mono); font-size: .68rem; }
@@ -255,39 +224,28 @@ input { font-family: inherit; }
 .tf-btn:hover { color: var(--paper); background: var(--ink-raise); }
 .tf-btn.active { background: var(--mint-dim); color: var(--mint); }
 
-/* indicator legend */
 .chart-legend {
   padding: 4px 14px; display: flex; gap: 14px; background: var(--ink-soft);
-  border-bottom: 1px solid var(--line); flex-shrink: 0;
+  border-bottom: 1px solid var(--line); flex-shrink: 0; flex-wrap: wrap;
 }
 .legend-item { font-family: var(--font-mono); font-size: .65rem; display: flex; align-items: center; gap: 5px; }
 .legend-dot { width: 10px; height: 2px; border-radius: 1px; }
 
-/* chart canvas area */
 .chart-canvas-area {
-  flex: 1; position: relative; min-height: 0; overflow: hidden;
+  flex: 1 1 0;
+  min-height: 220px;
+  position: relative;
+  overflow: hidden;
 }
 .chart-canvas-area canvas {
-  position: absolute; inset: 0;
-  width: 100% !important; height: 100% !important;
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  width: 100% !important; height: 100% !important; display: block;
 }
 
-/* volume strip */
-.volume-strip {
-  flex-shrink: 0; height: 52px; position: relative;
-  border-top: 1px solid var(--line); background: var(--ink);
-}
-.volume-strip canvas {
-  position: absolute; inset: 0;
-  width: 100% !important; height: 100% !important;
-}
+.volume-strip { flex-shrink: 0; height: 52px; position: relative; border-top: 1px solid var(--line); background: var(--ink); }
+.volume-strip canvas { position: absolute; inset: 0; width: 100% !important; height: 100% !important; }
 
-/* bottom panel */
-.bottom-tabs-bar {
-  flex-shrink: 0;
-  display: flex; background: var(--ink-soft);
-  border-top: 1px solid var(--line);
-}
+.bottom-tabs-bar { flex-shrink: 0; display: flex; background: var(--ink-soft); border-top: 1px solid var(--line); overflow-x: auto; }
 .btab {
   padding: 8px 16px; font-size: .72rem; font-family: var(--font-mono);
   color: var(--muted); border-bottom: 2px solid transparent;
@@ -307,7 +265,6 @@ input { font-family: inherit; }
   font-family: var(--font-mono); font-size: .75rem; text-align: center;
 }
 
-/* ── Column 3: Order book + form ── */
 .order-col {
   background: var(--ink-soft);
   border-left: 1px solid var(--line);
@@ -316,17 +273,10 @@ input { font-family: inherit; }
   grid-row: 1 / 3;
 }
 
-/* Order book */
 .ob-section { flex-shrink: 0; display: flex; flex-direction: column; }
-.ob-head {
-  padding: 8px 12px; border-bottom: 1px solid var(--line);
-  display: flex; justify-content: space-between; align-items: center;
-}
+.ob-head { padding: 8px 12px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; }
 .ob-head h4 { font-family: var(--font-mono); font-size: .68rem; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); }
-.ob-col-labels {
-  display: grid; grid-template-columns: 1fr 1fr 1fr;
-  padding: 4px 12px 2px; gap: 4px;
-}
+.ob-col-labels { display: grid; grid-template-columns: 1fr 1fr 1fr; padding: 4px 12px 2px; gap: 4px; }
 .ob-col-labels span { font-family: var(--font-mono); font-size: .62rem; color: var(--muted); text-transform: uppercase; }
 .ob-col-labels span:nth-child(2) { text-align: center; }
 .ob-col-labels span:nth-child(3) { text-align: right; }
@@ -337,10 +287,7 @@ input { font-family: inherit; }
   cursor: pointer; transition: filter .1s;
 }
 .ob-row:hover { filter: brightness(1.15); }
-.ob-row .depth-bar {
-  position: absolute; top: 0; bottom: 0; right: 0;
-  opacity: .10; pointer-events: none;
-}
+.ob-row .depth-bar { position: absolute; top: 0; bottom: 0; right: 0; opacity: .10; pointer-events: none; }
 .ob-row.ask .depth-bar { background: var(--coral); }
 .ob-row.bid .depth-bar { background: var(--mint); }
 .ob-row span { font-family: var(--font-mono); font-size: .72rem; z-index: 1; position: relative; }
@@ -348,18 +295,11 @@ input { font-family: inherit; }
 .ob-row.bid span:first-child { color: var(--mint); }
 .ob-row span:nth-child(2) { text-align: center; }
 .ob-row span:nth-child(3) { text-align: right; color: var(--muted); }
-.ob-mid {
-  padding: 5px 12px; display: flex; justify-content: space-between; align-items: center;
-  border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
-}
+.ob-mid { padding: 5px 12px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .ob-mid .mid-price { font-family: var(--font-mono); font-size: .9rem; font-weight: 700; color: var(--mint); }
 .ob-mid .mid-spread { font-family: var(--font-mono); font-size: .62rem; color: var(--muted); }
 
-/* Order form */
-.order-form-section {
-  flex: 1; overflow-y: auto; padding: 10px 12px 16px;
-  display: flex; flex-direction: column; gap: 8px;
-}
+.order-form-section { flex: 1; overflow-y: auto; padding: 10px 12px 16px; display: flex; flex-direction: column; gap: 8px; }
 .side-btns { display: flex; gap: 5px; }
 .side-btn {
   flex: 1; padding: 7px 0; border-radius: var(--radius-sm); font-size: .8rem;
@@ -370,7 +310,7 @@ input { font-family: inherit; }
 .side-btn.buy.active  { background: var(--mint);  color: #03140F; border-color: var(--mint); }
 .side-btn.sell.active { background: var(--coral); color: #fff;    border-color: var(--coral); }
 
-.type-btns { display: flex; gap: 3px; }
+.type-btns { display: flex; gap: 3px; flex-wrap: wrap; }
 .type-btn {
   padding: 4px 10px; border-radius: 4px; font-size: .68rem;
   font-family: var(--font-mono); color: var(--muted);
@@ -379,10 +319,7 @@ input { font-family: inherit; }
 }
 .type-btn.active { border-color: var(--line); color: var(--paper); background: var(--ink-raise); }
 
-.avail-row {
-  display: flex; justify-content: space-between;
-  font-family: var(--font-mono); font-size: .68rem;
-}
+.avail-row { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: .68rem; }
 .avail-row .lbl { color: var(--muted); }
 .avail-row .val { color: var(--paper); }
 
@@ -397,10 +334,7 @@ input { font-family: inherit; }
   transition: border-color .15s;
 }
 .input-wrap input:focus { border-color: var(--mint); }
-.input-unit {
-  position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
-  font-family: var(--font-mono); font-size: .62rem; color: var(--muted); pointer-events: none;
-}
+.input-unit { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); font-family: var(--font-mono); font-size: .62rem; color: var(--muted); pointer-events: none; }
 
 .pct-row { display: flex; gap: 3px; }
 .pct-btn {
@@ -410,10 +344,7 @@ input { font-family: inherit; }
 }
 .pct-btn:hover { border-color: var(--mint); color: var(--mint); }
 
-.order-summary {
-  background: var(--ink); border-radius: var(--radius-sm);
-  padding: 8px 10px; display: flex; flex-direction: column; gap: 3px;
-}
+.order-summary { background: var(--ink); border-radius: var(--radius-sm); padding: 8px 10px; display: flex; flex-direction: column; gap: 3px; }
 .sum-row { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: .68rem; }
 .sum-row .lbl { color: var(--muted); }
 .sum-row .val { color: var(--paper); }
@@ -428,6 +359,32 @@ input { font-family: inherit; }
 .submit-btn:hover { transform: translateY(-1px); opacity: .92; }
 
 /* ============================================================
+   PAIR PICKER
+   ============================================================ */
+.pair-picker-wrap { position: relative; flex-shrink: 0; }
+.pair-picker-btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 5px 10px; border-radius: var(--radius-sm);
+  border: 1px solid var(--line); background: var(--ink-raise);
+  color: var(--paper); cursor: pointer; font-family: var(--font-display);
+  font-weight: 700; font-size: .88rem; transition: border-color .15s;
+  white-space: nowrap;
+}
+.pair-picker-btn:hover { border-color: var(--mint); }
+.pp-name { color: var(--paper); }
+
+.pair-picker-dropdown {
+  position: absolute; top: calc(100% + 6px); left: 0;
+  width: 240px; background: var(--ink-soft);
+  border: 1px solid var(--line); border-radius: var(--radius-md);
+  box-shadow: 0 16px 40px -8px rgba(0,0,0,.6);
+  z-index: 500;
+  opacity: 0; visibility: hidden; transform: translateY(4px);
+  transition: opacity .15s, transform .15s, visibility .15s;
+}
+.pair-picker-dropdown.open { opacity: 1; visibility: visible; transform: translateY(0); }
+
+/* ============================================================
    MOBILE DRAWER
    ============================================================ */
 .mobile-menu {
@@ -439,25 +396,16 @@ input { font-family: inherit; }
   display: flex; flex-direction: column; gap: 0;
 }
 .mobile-menu.is-open { transform: translateX(0); visibility: visible; }
-.mobile-menu a {
-  display: block; padding: 13px 0; font-size: .95rem; font-weight: 500;
-  border-bottom: 1px solid var(--line); color: var(--muted);
-}
+.mobile-menu a { display: block; padding: 13px 0; font-size: .95rem; font-weight: 500; border-bottom: 1px solid var(--line); color: var(--muted); }
 .mobile-menu a.active, .mobile-menu a:hover { color: var(--mint); }
-.mobile-menu-close {
-  position: absolute; top: 14px; right: 16px;
-  background: none; border: none; cursor: pointer; color: var(--paper);
-}
+.mobile-menu-close { position: absolute; top: 14px; right: 16px; background: none; border: none; cursor: pointer; color: var(--paper); }
 .mobile-menu-close svg { width: 22px; height: 22px; stroke: currentColor; fill: none; }
-.mobile-backdrop {
-  display: none; position: fixed; inset: 0;
-  background: rgba(0,0,0,.55); z-index: 9998;
-}
+.mobile-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 9998; }
 .mobile-backdrop.is-open { display: block; }
 body.menu-open { overflow: hidden; }
 
 /* ============================================================
-   MOBILE TERMINAL TABS  (≤ 900px)
+   MOBILE / TABLET TERMINAL TABS (≤ 1023px)
    ============================================================ */
 .m-term-tabs {
   display: none; flex-shrink: 0;
@@ -480,20 +428,26 @@ body.menu-open { overflow: hidden; }
    RESPONSIVE BREAKPOINTS
    ============================================================ */
 
+/* Large desktop / wide monitors — give the chart more room */
+@media (min-width: 1440px) {
+  .trade-shell { grid-template-columns: 220px 1fr 320px; }
+}
+
 /* 1200px — shrink pair list */
 @media (max-width: 1200px) {
-  .trade-shell { grid-template-columns: 168px 1fr 268px; }
+  .trade-shell { grid-template-columns: 170px 1fr 264px; }
   .nav-stats { display: none; }
 }
 
-/* 1000px — hide pair list */
-@media (max-width: 1000px) {
-  .trade-shell { grid-template-columns: 0 1fr 252px; }
-  .pairs-col   { display: none; }
+/* 1024px — tablet landscape: keep 3 columns but tighter, drop secondary stats */
+@media (max-width: 1024px) {
+  .trade-shell { grid-template-columns: 150px 1fr 240px; }
+  .pair-row .sub { display: none; }
   .toolbar-stats { display: none; }
+  .pair-price-cell .ch { display: none; }
 }
 
-/* 900px — collapse to mobile tabs */
+/* 900px — tablet portrait & below: collapse to tabbed single-column terminal */
 @media (max-width: 900px) {
   body { overflow: hidden; }
 
@@ -505,11 +459,7 @@ body.menu-open { overflow: hidden; }
   .pairs-col, .chart-col, .order-col { display: none; }
   .m-term-tabs { display: flex; }
 
-  /* mobile panels fill remaining height */
-  .m-panels-wrap {
-    flex: 1; min-height: 0; overflow: hidden;
-    display: flex; flex-direction: column;
-  }
+  .m-panels-wrap { flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; }
 }
 
 /* 768px */
@@ -553,7 +503,6 @@ body.menu-open { overflow: hidden; }
       <a href="nft-marketplace.html">NFT</a>
     </nav>
 
-    <!-- Live pair summary pill -->
     <div class="nav-pair-select" id="navPairPill">
       <span class="nav-pair-name">BTC/USDT</span>
       <span class="nav-pair-price" id="navPrice">$67,230.12</span>
@@ -582,7 +531,7 @@ body.menu-open { overflow: hidden; }
   <div class="ticker-track" id="tickerTrack"></div>
 </div>
 
-<!-- Mobile tab bar (visible ≤900px) -->
+<!-- Mobile / tablet tab bar (visible ≤900px) -->
 <div class="m-term-tabs" id="mTermTabs">
   <button class="m-term-tab active" data-mp="chart">Chart</button>
   <button class="m-term-tab" data-mp="book">Order Book</button>
@@ -590,7 +539,7 @@ body.menu-open { overflow: hidden; }
   <button class="m-term-tab" data-mp="pairs">Pairs</button>
 </div>
 
-<!-- ── TRADE SHELL (3-col desktop) ── -->
+<!-- ── TRADE SHELL (3-col desktop / tablet-landscape) ── -->
 <div class="trade-shell" id="tradeShell">
 
   <!-- COL 1: Pair list -->
@@ -609,16 +558,32 @@ body.menu-open { overflow: hidden; }
   <!-- COL 2: Chart -->
   <section class="chart-col" id="chartCol">
     <div class="chart-toolbar">
-      <div class="toolbar-pair">
-        <strong>BTC/USDT</strong>
-        <div class="toolbar-price" id="toolbarPrice">67,230.12</div>
-        <div class="toolbar-chg up">+2.34%</div>
+      <div class="pair-picker-wrap" id="pairPickerWrap">
+        <button class="pair-picker-btn" id="pairPickerBtn" title="Switch pair">
+          <span class="pp-name" id="ppName">BTC/USDT</span>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="opacity:.5;flex-shrink:0"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+        <div class="pair-picker-dropdown" id="pairPickerDropdown">
+          <div style="padding:8px 10px 6px;">
+            <input class="search-input" placeholder="Search pairs…" id="ppSearch" style="margin-bottom:6px;">
+            <div class="tab-row" id="ppTabRow">
+              <button class="active">USDT</button>
+              <button>BTC</button>
+              <button>⭐</button>
+            </div>
+          </div>
+          <div class="pair-rows" id="ppPairRows" style="max-height:260px;overflow-y:auto;"></div>
+        </div>
       </div>
+
+      <div class="toolbar-price" id="toolbarPrice">67,230.12</div>
+      <div class="toolbar-chg up" id="toolbarChg">+2.34%</div>
+
       <div class="toolbar-stats">
-        <div class="t-stat"><span class="lbl">H&nbsp;</span><span class="val">68,105</span></div>
-        <div class="t-stat"><span class="lbl">L&nbsp;</span><span class="val">65,890</span></div>
+        <div class="t-stat"><span class="lbl">H&nbsp;</span><span class="val" id="tStatH">68,105</span></div>
+        <div class="t-stat"><span class="lbl">L&nbsp;</span><span class="val" id="tStatL">65,890</span></div>
         <div class="t-stat"><span class="lbl">Vol&nbsp;</span><span class="val">4.2B</span></div>
-        <div class="t-stat"><span class="lbl">Mark&nbsp;</span><span class="val">67,228</span></div>
+        <div class="t-stat"><span class="lbl">Mark&nbsp;</span><span class="val" id="tStatMark">67,228</span></div>
       </div>
       <div class="tf-row" id="tfRow">
         <button class="tf-btn" data-tf="1m">1m</button>
@@ -657,7 +622,7 @@ body.menu-open { overflow: hidden; }
     <div class="ob-section">
       <div class="ob-head">
         <h4>Order Book</h4>
-        <span style="font-family:var(--font-mono); font-size:.62rem; color:var(--muted)">BTC/USDT</span>
+        <span style="font-family:var(--font-mono); font-size:.62rem; color:var(--muted)" id="obPairLabelD">BTC/USDT</span>
       </div>
       <div class="ob-col-labels">
         <span>Price</span><span style="text-align:center">Amount</span><span style="text-align:right">Total</span>
@@ -721,16 +686,16 @@ body.menu-open { overflow: hidden; }
   </aside>
 </div><!-- /trade-shell -->
 
-<!-- ── MOBILE PANELS WRAPPER ── -->
+<!-- ── MOBILE / TABLET PANELS WRAPPER ── -->
 <div class="m-panels-wrap" id="mPanelsWrap">
 
-  <!-- Chart panel (mobile) -->
+  <!-- Chart panel (mobile/tablet) -->
   <div class="m-panel active" id="mp-chart">
     <div class="chart-toolbar" style="background:var(--ink-soft);">
       <div class="toolbar-pair">
-        <strong>BTC/USDT</strong>
-        <div class="toolbar-price up">67,230.12</div>
-        <div class="toolbar-chg up" style="font-size:.68rem">+2.34%</div>
+        <strong id="mPairName">BTC/USDT</strong>
+        <div class="toolbar-price up" id="mToolbarPrice">67,230.12</div>
+        <div class="toolbar-chg up" id="mToolbarChg" style="font-size:.68rem">+2.34%</div>
       </div>
       <div class="tf-row" id="mTfRow">
         <button class="tf-btn" data-tf="5m">5m</button>
@@ -741,38 +706,38 @@ body.menu-open { overflow: hidden; }
       </div>
     </div>
     <div class="chart-legend" style="background:var(--ink-soft);">
-      <div class="legend-item"><div class="legend-dot" style="background:#00D9A3;"></div><span style="color:var(--muted)">EMA 21</span></div>
-      <div class="legend-item"><div class="legend-dot" style="background:#F2B84B;"></div><span style="color:var(--muted)">EMA 50</span></div>
-      <div class="legend-item"><div class="legend-dot" style="background:#6B8AFF;"></div><span style="color:var(--muted)">EMA 100</span></div>
+      <div class="legend-item"><div class="legend-dot" style="background:#00D9A3;"></div><span style="color:var(--muted)">EMA 21</span><span id="mEma21Val" style="color:#00D9A3"></span></div>
+      <div class="legend-item"><div class="legend-dot" style="background:#F2B84B;"></div><span style="color:var(--muted)">EMA 50</span><span id="mEma50Val" style="color:#F2B84B"></span></div>
+      <div class="legend-item"><div class="legend-dot" style="background:#6B8AFF;"></div><span style="color:var(--muted)">EMA 100</span><span id="mEma100Val" style="color:#6B8AFF"></span></div>
     </div>
-    <div style="flex:1; position:relative; min-height:0; background:var(--ink); overflow:hidden;">
-      <canvas id="mMainChart" style="position:absolute;inset:0;width:100%!important;height:100%!important;"></canvas>
+    <div class="chart-canvas-area" style="min-height:200px;">
+      <canvas id="mMainChart"></canvas>
     </div>
-    <div style="height:50px; position:relative; background:var(--ink); border-top:1px solid var(--line);">
+    <div style="height:50px; position:relative; background:var(--ink); border-top:1px solid var(--line); flex-shrink:0;">
       <canvas id="mVolChart" style="position:absolute;inset:0;width:100%!important;height:100%!important;"></canvas>
     </div>
     <div class="bottom-tabs-bar">
-      <button class="btab active">Open Orders</button>
-      <button class="btab">History</button>
-      <button class="btab">Funds</button>
+      <button class="btab active" data-bt="orders">Open Orders</button>
+      <button class="btab" data-bt="history">History</button>
+      <button class="btab" data-bt="funds">Funds</button>
     </div>
-    <div class="bottom-content">
+    <div class="bottom-content" id="mBottomContent">
       <div class="empty-state">▣&nbsp;&nbsp;No open orders yet.</div>
     </div>
   </div>
 
-  <!-- Order book (mobile) -->
+  <!-- Order book (mobile/tablet) -->
   <div class="m-panel" id="mp-book" style="background:var(--ink-soft);">
-    <div class="ob-head"><h4>Order Book</h4><span style="font-family:var(--font-mono);font-size:.62rem;color:var(--muted)">BTC/USDT</span></div>
+    <div class="ob-head"><h4>Order Book</h4><span style="font-family:var(--font-mono);font-size:.62rem;color:var(--muted)" id="obPairLabelM">BTC/USDT</span></div>
     <div class="ob-col-labels"><span>Price</span><span style="text-align:center">Amount</span><span style="text-align:right">Total</span></div>
     <div style="flex:1;overflow-y:auto;">
       <div id="mAskRows"></div>
-      <div class="ob-mid"><span class="mid-price">67,230.12</span><span class="mid-spread">Spread 0.42</span></div>
+      <div class="ob-mid"><span class="mid-price" id="obMidM">67,230.12</span><span class="mid-spread">Spread 0.42</span></div>
       <div id="mBidRows"></div>
     </div>
   </div>
 
-  <!-- Order form (mobile) -->
+  <!-- Order form (mobile/tablet) -->
   <div class="m-panel" id="mp-form" style="background:var(--ink-soft);">
     <div class="order-form-section" style="max-width:500px;margin:0 auto;width:100%;">
       <div class="side-btns" id="sideBtnsM">
@@ -789,10 +754,10 @@ body.menu-open { overflow: hidden; }
       <div class="form-field"><label>Price (USDT)</label><div class="input-wrap"><input type="number" id="priceM" value="67230.12" step="0.01"><span class="input-unit">USDT</span></div></div>
       <div class="form-field"><label>Amount (BTC)</label><div class="input-wrap"><input type="number" id="amtM" placeholder="0.0000" step="0.0001"><span class="input-unit">BTC</span></div></div>
       <div class="pct-row">
-        <button class="pct-btn">25%</button>
-        <button class="pct-btn">50%</button>
-        <button class="pct-btn">75%</button>
-        <button class="pct-btn">Max</button>
+        <button class="pct-btn" data-pct="25">25%</button>
+        <button class="pct-btn" data-pct="50">50%</button>
+        <button class="pct-btn" data-pct="75">75%</button>
+        <button class="pct-btn" data-pct="100">Max</button>
       </div>
       <div class="form-field"><label>Total (USDT)</label><div class="input-wrap"><input type="number" id="totalM" placeholder="0.00"><span class="input-unit">USDT</span></div></div>
       <div class="order-summary">
@@ -803,7 +768,7 @@ body.menu-open { overflow: hidden; }
     </div>
   </div>
 
-  <!-- Pairs (mobile) -->
+  <!-- Pairs (mobile/tablet) -->
   <div class="m-panel" id="mp-pairs" style="background:var(--ink-soft);">
     <div class="pairs-head" style="padding:10px;">
       <input class="search-input" placeholder="Search pairs…" id="pairSearchM" style="margin-bottom:8px;">
@@ -847,7 +812,8 @@ body.menu-open { overflow: hidden; }
   const qsa = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
 
   /* ═════════════════════════════════════════════
-     CHART ENGINE
+     CHART ENGINE — real OHLC candlesticks + EMA overlays + volume
+     (canvas-drawn, no external chart lib dependency, fully responsive)
      ═════════════════════════════════════════════ */
   function genCandles(n, base, vol) {
     let p = base;
@@ -869,20 +835,31 @@ body.menu-open { overflow: hidden; }
     return closes.map(c => { ema = c * k + ema * (1 - k); return ema; });
   }
 
-  function drawCandles(canvas, candles) {
-    if (!canvas) return;
-    const dpr  = window.devicePixelRatio || 1;
-    const rect = canvas.parentElement.getBoundingClientRect();
-    const W    = rect.width  || 600;
-    const H    = rect.height || 300;
-
-    canvas.width  = W * dpr;
-    canvas.height = H * dpr;
-    canvas.style.width  = W + 'px';
+  function sizeCanvasToParent(canvas) {
+    const parent = canvas.parentElement;
+    if (!parent) return null;
+    const dpr = window.devicePixelRatio || 1;
+    const W = Math.max(parent.clientWidth, 1);
+    const H = Math.max(parent.clientHeight, 1);
+    if (W < 4 || H < 4) return null;
+    const targetW = Math.round(W * dpr);
+    const targetH = Math.round(H * dpr);
+    if (canvas.width !== targetW || canvas.height !== targetH) {
+      canvas.width = targetW;
+      canvas.height = targetH;
+    }
+    canvas.style.width = W + 'px';
     canvas.style.height = H + 'px';
-
     const ctx = canvas.getContext('2d');
-    ctx.scale(dpr, dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return { ctx, W, H, dpr };
+  }
+
+  function drawCandles(canvas, candles, legendIds) {
+    if (!canvas || !candles || !candles.length) return;
+    const sized = sizeCanvasToParent(canvas);
+    if (!sized) return;
+    const { ctx, W, H, dpr } = sized;
 
     const isLight = document.documentElement.getAttribute('data-theme') === 'light';
     const MINT    = '#00D9A3';
@@ -891,7 +868,6 @@ body.menu-open { overflow: hidden; }
     const BLUE    = '#6B8AFF';
     const MUTED   = isLight ? '#5B6480' : '#8993AB';
     const LINE    = isLight ? '#D5DAF0' : '#262E45';
-    const PAPER   = isLight ? '#0D1226' : '#E9ECF6';
     const BG      = isLight ? '#FFFFFF' : '#0A0E1A';
 
     ctx.clearRect(0, 0, W, H);
@@ -899,8 +875,8 @@ body.menu-open { overflow: hidden; }
     ctx.fillRect(0, 0, W, H);
 
     const pad = { top: 10, right: 6, bottom: 26, left: 58 };
-    const cW  = W - pad.left - pad.right;
-    const cH  = H - pad.top  - pad.bottom;
+    const cW  = Math.max(W - pad.left - pad.right, 1);
+    const cH  = Math.max(H - pad.top  - pad.bottom, 1);
 
     const allHighs = candles.map(c => c.high);
     const allLows  = candles.map(c => c.low);
@@ -910,12 +886,12 @@ body.menu-open { overflow: hidden; }
     const pad5 = rng * .06;
     const minS = minP - pad5;
     const maxS = maxP + pad5;
-    const rngS = maxS - minS;
+    const rngS = maxS - minS || 1;
 
-    const xOf  = i  => pad.left + ((i + .5) / candles.length) * cW;
-    const yOf  = p  => pad.top  + cH - ((p - minS) / rngS) * cH;
+    const xOf = i => pad.left + ((i + .5) / candles.length) * cW;
+    const yOf = p => pad.top  + cH - ((p - minS) / rngS) * cH;
 
-    /* grid */
+    /* horizontal grid + price labels */
     const GRID = 5;
     ctx.lineWidth = .5;
     ctx.strokeStyle = LINE;
@@ -924,13 +900,13 @@ body.menu-open { overflow: hidden; }
       const pv = maxS - (g / GRID) * rngS;
       ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(pad.left + cW, y); ctx.stroke();
       ctx.fillStyle = MUTED;
-      ctx.font = `${10 / dpr + 9}px 'JetBrains Mono', monospace`;
+      ctx.font = `10px 'JetBrains Mono', monospace`;
       ctx.textAlign = 'right';
       ctx.fillText('$' + pv.toFixed(0), pad.left - 5, y + 3.5);
     }
 
-    /* vertical grid (time) */
-    const tStep = Math.ceil(candles.length / 8);
+    /* vertical grid + time labels */
+    const tStep = Math.max(1, Math.ceil(candles.length / 8));
     for (let i = 0; i < candles.length; i += tStep) {
       const x = xOf(i);
       ctx.beginPath(); ctx.moveTo(x, pad.top); ctx.lineTo(x, pad.top + cH); ctx.stroke();
@@ -941,7 +917,7 @@ body.menu-open { overflow: hidden; }
       ctx.fillText(lb, x, H - 6);
     }
 
-    /* area fill */
+    /* area fill under close price */
     const closes = candles.map(c => c.close);
     const apts   = closes.map((c, i) => [xOf(i), yOf(c)]);
     if (apts.length > 1) {
@@ -958,16 +934,14 @@ body.menu-open { overflow: hidden; }
       ctx.fill();
     }
 
-    /* candles */
+    /* candlesticks */
     const bW = Math.max(1.5, (cW / candles.length) * .55);
     candles.forEach((c, i) => {
       const x     = xOf(i);
       const bull  = c.close >= c.open;
       const color = bull ? MINT : CORAL;
-      /* wick */
       ctx.strokeStyle = color; ctx.lineWidth = 1;
       ctx.beginPath(); ctx.moveTo(x, yOf(c.high)); ctx.lineTo(x, yOf(c.low)); ctx.stroke();
-      /* body */
       const bTop = Math.min(yOf(c.open), yOf(c.close));
       const bH   = Math.max(1, Math.abs(yOf(c.close) - yOf(c.open)));
       ctx.globalAlpha = bull ? .92 : .82;
@@ -976,10 +950,10 @@ body.menu-open { overflow: hidden; }
       ctx.globalAlpha = 1;
     });
 
-    /* EMA lines */
+    /* EMA overlays */
     function emaLine(period, color) {
-      if (candles.length < period) return 0;
-      const ema = calcEMA(closes, period);
+      if (candles.length < 2) return 0;
+      const ema = calcEMA(closes, Math.min(period, candles.length));
       ctx.strokeStyle = color; ctx.lineWidth = 1.4; ctx.globalAlpha = .8;
       ctx.setLineDash([]);
       ctx.beginPath();
@@ -992,12 +966,12 @@ body.menu-open { overflow: hidden; }
     const e50  = emaLine(50,  GOLD);
     const e100 = emaLine(100, BLUE);
 
-    /* Update legend values */
-    if ($('ema21Val'))  $('ema21Val').textContent  = e21  ? ' ' + e21.toFixed(0)  : '';
-    if ($('ema50Val'))  $('ema50Val').textContent  = e50  ? ' ' + e50.toFixed(0)  : '';
-    if ($('ema100Val')) $('ema100Val').textContent = e100 ? ' ' + e100.toFixed(0) : '';
+    if (legendIds) {
+      if ($(legendIds.e21))  $(legendIds.e21).textContent  = e21  ? ' ' + e21.toFixed(0)  : '';
+      if ($(legendIds.e50))  $(legendIds.e50).textContent  = e50  ? ' ' + e50.toFixed(0)  : '';
+      if ($(legendIds.e100)) $(legendIds.e100).textContent = e100 ? ' ' + e100.toFixed(0) : '';
+    }
 
-    /* Crosshair hover */
     canvas._candles = candles;
     canvas._pad     = pad;
     canvas._yOf     = yOf;
@@ -1005,27 +979,19 @@ body.menu-open { overflow: hidden; }
     canvas._W       = W;
     canvas._H       = H;
     canvas._MUTED   = MUTED;
-    canvas._PAPER   = PAPER;
-    canvas._LINE    = LINE;
     canvas._dpr     = dpr;
+    canvas._legendIds = legendIds;
   }
 
   function drawVolume(canvas, candles) {
-    if (!canvas) return;
-    const dpr  = window.devicePixelRatio || 1;
-    const rect = canvas.parentElement.getBoundingClientRect();
-    const W    = rect.width || 600;
-    const H    = rect.height || 50;
-    canvas.width  = W * dpr;
-    canvas.height = H * dpr;
-    canvas.style.width  = W + 'px';
-    canvas.style.height = H + 'px';
-    const ctx = canvas.getContext('2d');
-    ctx.scale(dpr, dpr);
+    if (!canvas || !candles || !candles.length) return;
+    const sized = sizeCanvasToParent(canvas);
+    if (!sized) return;
+    const { ctx, W, H } = sized;
     const isLight = document.documentElement.getAttribute('data-theme') === 'light';
     ctx.fillStyle = isLight ? '#FFFFFF' : '#0A0E1A';
     ctx.fillRect(0, 0, W, H);
-    const maxV = Math.max(...candles.map(c => c.vol));
+    const maxV = Math.max(...candles.map(c => c.vol), 0.0001);
     const bW   = Math.max(1, (W / candles.length) * .6);
     candles.forEach((c, i) => {
       const x = (i / candles.length) * W + (W / candles.length) * .2;
@@ -1037,9 +1003,9 @@ body.menu-open { overflow: hidden; }
     ctx.globalAlpha = 1;
   }
 
-  /* Crosshair */
   function addCrosshair(canvas) {
-    if (!canvas) return;
+    if (!canvas || canvas._crosshairBound) return;
+    canvas._crosshairBound = true;
     canvas.style.cursor = 'crosshair';
     canvas.addEventListener('mousemove', e => {
       if (!canvas._candles) return;
@@ -1047,9 +1013,7 @@ body.menu-open { overflow: hidden; }
       const rect = canvas.getBoundingClientRect();
       const mx   = e.clientX - rect.left;
       const my   = e.clientY - rect.top;
-      const dpr  = canvas._dpr || 1;
-      /* redraw */
-      drawCandles(canvas, canvas._candles);
+      drawCandles(canvas, canvas._candles, canvas._legendIds);
       ctx.save();
       ctx.strokeStyle = canvas._MUTED;
       ctx.lineWidth   = 0.5;
@@ -1059,8 +1023,24 @@ body.menu-open { overflow: hidden; }
       ctx.restore();
     });
     canvas.addEventListener('mouseleave', () => {
-      if (canvas._candles) drawCandles(canvas, canvas._candles);
+      if (canvas._candles) drawCandles(canvas, canvas._candles, canvas._legendIds);
     });
+    /* touch support for tablet/mobile */
+    canvas.addEventListener('touchstart', e => {
+      if (!canvas._candles || !e.touches[0]) return;
+      const ctx  = canvas.getContext('2d');
+      const rect = canvas.getBoundingClientRect();
+      const mx   = e.touches[0].clientX - rect.left;
+      const my   = e.touches[0].clientY - rect.top;
+      drawCandles(canvas, canvas._candles, canvas._legendIds);
+      ctx.save();
+      ctx.strokeStyle = canvas._MUTED;
+      ctx.lineWidth   = 0.5;
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath(); ctx.moveTo(mx, canvas._pad.top); ctx.lineTo(mx, canvas._H - canvas._pad.bottom); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(canvas._pad.left, my); ctx.lineTo(canvas._W - canvas._pad.right, my); ctx.stroke();
+      ctx.restore();
+    }, { passive: true });
   }
 
   /* ═════════════════════════════════════════════
@@ -1068,10 +1048,13 @@ body.menu-open { overflow: hidden; }
      ═════════════════════════════════════════════ */
   let candles = genCandles(80, 67000, 850);
 
+  const D_LEGEND = { e21: 'ema21Val', e50: 'ema50Val', e100: 'ema100Val' };
+  const M_LEGEND = { e21: 'mEma21Val', e50: 'mEma50Val', e100: 'mEma100Val' };
+
   function redrawAll() {
-    drawCandles($('mainChart'),  candles);
+    drawCandles($('mainChart'),  candles, D_LEGEND);
     drawVolume ($('volChart'),   candles);
-    drawCandles($('mMainChart'), candles);
+    drawCandles($('mMainChart'), candles, M_LEGEND);
     drawVolume ($('mVolChart'),  candles);
     addCrosshair($('mainChart'));
     addCrosshair($('mMainChart'));
@@ -1128,12 +1111,6 @@ body.menu-open { overflow: hidden; }
           <div class="ch ${p.up ? 'delta-up' : 'delta-down'}">${p.c}</div>
         </div>
       </div>`).join('');
-    containerEl.querySelectorAll('.pair-row').forEach(row => {
-      row.addEventListener('click', () => {
-        containerEl.querySelectorAll('.pair-row').forEach(r => r.classList.remove('active'));
-        row.classList.add('active');
-      });
-    });
   }
   renderPairs($('pairRowsD'), PAIRS);
   renderPairs($('pairRowsM'), PAIRS);
@@ -1150,11 +1127,31 @@ body.menu-open { overflow: hidden; }
   initSearch($('pairSearchD'), $('pairRowsD'));
   initSearch($('pairSearchM'), $('pairRowsM'));
 
-  /* Pairs tab row highlight */
   qsa('#pairsTabRow button').forEach(btn => {
     btn.addEventListener('click', () => {
       qsa('#pairsTabRow button').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
+    });
+  });
+
+  /* Selecting a pair anywhere → update toolbar labels + regenerate candles */
+  function selectPair(sym) {
+    [$('ppName'), $('mPairName')].forEach(el => { if (el) el.textContent = sym; });
+    [$('obPairLabelD'), $('obPairLabelM')].forEach(el => { if (el) el.textContent = sym; });
+    [$('pairRowsD'), $('pairRowsM'), $('ppPairRows')].forEach(container => {
+      container?.querySelectorAll('.pair-row').forEach(r => {
+        r.classList.toggle('active', r.querySelector('.name')?.textContent === sym);
+      });
+    });
+    const base = 40 + Math.random() * 66000;
+    candles = genCandles(80, sym === 'BTC/USDT' ? 67000 : base, sym === 'BTC/USDT' ? 850 : base * .012);
+    setTimeout(redrawAll, 20);
+  }
+  [['pairRowsD'], ['pairRowsM'], ['ppPairRows']].forEach(([id]) => {
+    $(id)?.addEventListener('click', e => {
+      const row = e.target.closest('.pair-row'); if (!row) return;
+      const sym = row.querySelector('.name')?.textContent;
+      if (sym) selectPair(sym);
     });
   });
 
@@ -1167,7 +1164,6 @@ body.menu-open { overflow: hidden; }
     const rows = n => Array.from({ length: n }, (_, i) => ({
       px: (base + (n - i) * 4.8).toFixed(2),
       amt: (Math.random() * 1.3 + .03).toFixed(4),
-      ask: true,
     }));
     const asks = rows(10);
     const bids = Array.from({ length: 10 }, (_, i) => ({
@@ -1205,7 +1201,9 @@ body.menu-open { overflow: hidden; }
       btn.addEventListener('click', () => {
         row.querySelectorAll('.tf-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        candles = genCandles(80, 67000, 850);
+        const tf = btn.dataset.tf;
+        const tfCount = { '1m':120, '5m':100, '15m':96, '1H':80, '4H':60, '1D':50, '1W':40 }[tf] || 80;
+        candles = genCandles(tfCount, candles[candles.length-1].close, 850 * (tf === '1W' ? 3 : tf === '1D' ? 1.6 : 1));
         setTimeout(redrawAll, 30);
       });
     });
@@ -1232,7 +1230,7 @@ body.menu-open { overflow: hidden; }
   });
 
   /* ═════════════════════════════════════════════
-     ORDER FORM — side / type toggle + calculations
+     ORDER FORM
      ═════════════════════════════════════════════ */
   const AVAIL = 10420;
 
@@ -1250,7 +1248,6 @@ body.menu-open { overflow: hidden; }
       });
     });
 
-    /* OCO/Limit/Market type toggle */
     sideBtnsEl.closest('.order-form-section')?.querySelectorAll('.type-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         sideBtnsEl.closest('.order-form-section').querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
@@ -1272,7 +1269,6 @@ body.menu-open { overflow: hidden; }
 
     [priceEl, amtEl, totalEl].forEach(el => { if (el) el.addEventListener('input', calc); });
 
-    /* % buttons inside the same form section */
     sideBtnsEl.closest('.order-form-section')?.querySelectorAll('.pct-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const pct = parseFloat(btn.dataset.pct) / 100 || 1;
@@ -1287,7 +1283,7 @@ body.menu-open { overflow: hidden; }
   initForm($('sideBtnsM'), $('submitM'), $('priceM'), $('amtM'), $('totalM'), $('feeM'), $('netM'));
 
   /* ═════════════════════════════════════════════
-     MOBILE TERMINAL TABS
+     MOBILE / TABLET TERMINAL TABS
      ═════════════════════════════════════════════ */
   const MP = { chart:'mp-chart', book:'mp-book', form:'mp-form', pairs:'mp-pairs' };
 
@@ -1306,7 +1302,6 @@ body.menu-open { overflow: hidden; }
       }
     });
   });
-  /* Hide non-active mobile panels on load */
   ['mp-book','mp-form','mp-pairs'].forEach(id => {
     const el = $(id); if (el) el.style.display = 'none';
   });
@@ -1336,25 +1331,98 @@ body.menu-open { overflow: hidden; }
   });
 
   /* ═════════════════════════════════════════════
-     LIVE PRICE TICK
+     LIVE PRICE TICK — also nudges the live candle so the chart moves
      ═════════════════════════════════════════════ */
   setInterval(() => {
-    const p = 67230 + (Math.random() - .5) * 180;
+    const last = candles[candles.length - 1];
+    const drift = (Math.random() - .5) * 60;
+    last.close = Math.max(1, last.close + drift);
+    last.high  = Math.max(last.high, last.close);
+    last.low   = Math.min(last.low,  last.close);
+    const p = last.close;
+    const up = drift >= 0;
     const fmt = p.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    [$('navPrice'), $('toolbarPrice'), $('obMidD')].forEach(el => { if (el) el.textContent = (el === $('navPrice') ? '$' : '') + fmt; });
+    [$('navPrice')].forEach(el => { if (el) el.textContent = '$' + fmt; });
+    [$('toolbarPrice'), $('obMidD'), $('mToolbarPrice'), $('obMidM')].forEach(el => { if (el) el.textContent = fmt; });
+    [$('navPairPill')?.querySelector('.nav-pair-chg')].forEach(()=>{});
+    redrawAll();
   }, 2600);
 
   /* ═════════════════════════════════════════════
-     RESIZE
+     RESIZE — handles window resize, orientation change, and
+     panel-tab switches across desktop / tablet / mobile
      ═════════════════════════════════════════════ */
   let rTimer;
   window.addEventListener('resize', () => { clearTimeout(rTimer); rTimer = setTimeout(redrawAll, 100); });
+  window.addEventListener('orientationchange', () => { setTimeout(redrawAll, 200); });
+
+  /* ResizeObserver keeps charts pixel-perfect even when their
+     container resizes without a window resize event (e.g. tab switch,
+     dynamic layout shifts on tablet breakpoints) */
+  if (typeof ResizeObserver !== 'undefined') {
+    const ro = new ResizeObserver(() => { clearTimeout(rTimer); rTimer = setTimeout(redrawAll, 60); });
+    ['mainChartArea', 'mp-chart', 'tradeShell'].forEach(id => { const el = $(id); if (el) ro.observe(el); });
+  }
 
   /* ═════════════════════════════════════════════
-     INIT
+     PAIR PICKER DROPDOWN
      ═════════════════════════════════════════════ */
-  window.addEventListener('load', () => setTimeout(redrawAll, 80));
-  document.addEventListener('DOMContentLoaded', () => setTimeout(redrawAll, 60));
+  (function initPairPicker() {
+    const btn      = $('pairPickerBtn');
+    const dropdown = $('pairPickerDropdown');
+    const ppRows   = $('ppPairRows');
+    const ppSearch = $('ppSearch');
+    const ppTab    = $('ppTabRow');
+    if (!btn || !dropdown) return;
+
+    renderPairs(ppRows, PAIRS);
+
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      dropdown.classList.toggle('open');
+      if (dropdown.classList.contains('open')) ppSearch?.focus();
+    });
+
+    document.addEventListener('click', e => {
+      if (!dropdown.contains(e.target) && e.target !== btn)
+        dropdown.classList.remove('open');
+    });
+
+    ppRows?.addEventListener('click', () => { dropdown.classList.remove('open'); });
+
+    ppSearch?.addEventListener('input', () => {
+      const q = ppSearch.value.toLowerCase();
+      ppRows.querySelectorAll('.pair-row').forEach(r => {
+        r.style.display = r.textContent.toLowerCase().includes(q) ? '' : 'none';
+      });
+    });
+
+    ppTab?.querySelectorAll('button').forEach(b => {
+      b.addEventListener('click', () => {
+        ppTab.querySelectorAll('button').forEach(x => x.classList.remove('active'));
+        b.classList.add('active');
+      });
+    });
+  })();
+
+  /* ═════════════════════════════════════════════
+     INIT — retry until canvas containers have real layout,
+     covers desktop, tablet, and mobile first paint
+     ═════════════════════════════════════════════ */
+  function tryDraw(attempts) {
+    const mc = $('mainChart');
+    const ready = (mc && mc.parentElement.clientHeight > 20) ||
+                  (window.innerWidth <= 900 && $('mMainChart')?.parentElement.clientHeight > 20);
+    if (ready) {
+      redrawAll();
+    } else if (attempts > 0) {
+      setTimeout(() => tryDraw(attempts - 1), 120);
+    }
+  }
+
+  window.addEventListener('load', () => tryDraw(12));
+  document.addEventListener('DOMContentLoaded', () => setTimeout(() => tryDraw(10), 60));
+  tryDraw(6);
 
 })();
 </script>
